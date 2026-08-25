@@ -1,0 +1,78 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #1b1b23;
+  --muted: #5c5c6e;
+  --accent: #4338ca;
+  --accent-soft: #eef2ff;
+  --bg: #fdfdfb;
+  --line: #e7e7ef;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5vw;
+  border-bottom: 1px solid var(--line);
+  font-family: system-ui, sans-serif;
+}
+.site-header .logo { font-weight: 700; font-size: 1.25rem; color: var(--accent); text-decoration: none; }
+.site-header nav a { margin-left: 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+.site-header nav a:hover { color: var(--accent); }
+
+main { max-width: 760px; margin: 0 auto; padding: 3rem 5vw 4rem; }
+
+.hero h1 { font-size: 2.1rem; line-height: 1.25; margin-bottom: 1rem; }
+.hero .lede { font-size: 1.15rem; color: var(--muted); margin-bottom: 2.5rem; }
+
+section { margin-bottom: 2.75rem; }
+h2 { font-size: 1.4rem; margin-bottom: 0.75rem; }
+h3 { font-size: 1.05rem; margin: 1.25rem 0 0.35rem; }
+p { margin-bottom: 0.9rem; }
+ul { margin: 0 0 0.9rem 1.25rem; }
+li { margin-bottom: 0.35rem; }
+
+.codebox {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.codebox form { display: flex; gap: 0.6rem; margin-top: 0.9rem; flex-wrap: wrap; }
+.codebox input {
+  flex: 1; min-width: 200px; padding: 0.65rem 0.9rem;
+  border: 1px solid var(--line); border-radius: 8px; font-size: 1rem;
+}
+.codebox button {
+  padding: 0.65rem 1.3rem; background: var(--accent); color: white;
+  border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
+}
+.codebox .ok { margin-top: 0.9rem; color: #15803d; font-weight: 600; }
+
+.profile-gate {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 1.5rem; background: white; margin-bottom: 2rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 5vw 2.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-family: system-ui, sans-serif;
+  max-width: 900px;
+}
+.site-footer p { margin-bottom: 0.5rem; }
+
+table.stats { border-collapse: collapse; width: 100%; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+table.stats th, table.stats td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; }
+table.stats th { background: var(--accent-soft); }
+.ai-row { background: #fef9c3; font-weight: 600; }
