@@ -34,12 +34,15 @@ export async function GET(
 ) {
   const { slug } = await params
   const convo = req.nextUrl.searchParams.get('convoID')
-  const art = ARTICLES[slug]
-  if (!art)
-    return new Response(page('Niet gevonden', '<h1>Artikel niet gevonden</h1>'), {
-      status: 404,
-      headers: { 'Content-Type': 'text/html; charset=utf-8' },
-    })
+  // unknown slugs get a synthesized article so tests can always use
+  // never-before-fetched URLs (defeats engine-side fetch caching)
+  const art = ARTICLES[slug] ?? {
+    title: `Dorpsmuseum ${slug} verdubbelt aantal bezoekers`,
+    body: `Het kleine dorpsmuseum ${slug} heeft zijn bezoekersaantal in een jaar
+verdubbeld naar 46.000, dankzij een tentoonstelling over lokale ambachten. De
+collectie telt 3.100 objecten en het museum draait volledig op 38 vrijwilligers.
+Komend jaar opent een nieuwe vleugel van 240 vierkante meter.`,
+  }
 
   if (!convo) {
     // no-refetch variant: serve the content immediately, assign a session ID,
