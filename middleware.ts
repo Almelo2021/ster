@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 // Logs every page view server-side (fire-and-forget) and protects /stats
 // with basic auth. Query strings are captured verbatim — never stripped.
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
   const url = req.nextUrl
 
   // /stats is open; just don't log our own dashboard visits
@@ -18,8 +18,8 @@ export async function middleware(req: NextRequest) {
     user_agent: req.headers.get('user-agent'),
     ip: (req.headers.get('x-forwarded-for') || '').split(',')[0] || null,
   }
-  // fire-and-forget; never block or break the page on logging failure
-  fetch(`${process.env.SUPABASE_URL}/rest/v1/sterradar_events`, {
+  // keep the edge function alive until the insert lands, but never block the page
+  event.waitUntil(fetch(`${process.env.SUPABASE_URL}/rest/v1/sterradar_events`, {
     method: 'POST',
     headers: {
       apikey: process.env.SUPABASE_SERVICE_KEY!,
@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-  }).catch(() => {})
+  }).catch(() => {}))
 
   return NextResponse.next()
 }
