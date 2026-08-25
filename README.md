@@ -11,7 +11,7 @@ redeemed codes.
 2. **Env** — copy `.env.example` to `.env.local` and fill in:
    - `SUPABASE_URL` — `https://<project>.supabase.co` (no trailing slash)
    - `SUPABASE_SERVICE_KEY` — service role key
-   - `STATS_USER` / `STATS_PASS` — basic auth for `/stats`
+  
 3. **Local dev** — `npm install && npm run dev`
 4. **Deploy** — push to a repo, import in Vercel, set the same env vars, then add the
    `sterradar.nl` domain in Vercel and point DNS at it.
@@ -22,7 +22,7 @@ redeemed codes.
 - `/profiel/[naam]` — gated profile page (any slug resolves), same form
 - `/via/[slug]` — attribution landing paths, render the homepage, path is logged
 - `/api/redeem` — POST `{code, path}`; logs a `redeem` event
-- `/stats` — basic-auth dashboard (AI agents highlighted)
+- `/stats` — open dashboard (AI agents highlighted)
 
 Query strings are logged verbatim and never stripped or redirected, so UTM survival
 is measurable. `robots.txt` allows all crawlers.

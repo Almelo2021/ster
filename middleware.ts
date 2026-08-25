@@ -5,19 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl
 
+  // /stats is open; just don't log our own dashboard visits
   if (url.pathname.startsWith('/stats')) {
-    const auth = req.headers.get('authorization') || ''
-    const expected =
-      'Basic ' +
-      Buffer.from(
-        `${process.env.STATS_USER || 'sven'}:${process.env.STATS_PASS || ''}`,
-      ).toString('base64')
-    if (!process.env.STATS_PASS || auth !== expected) {
-      return new NextResponse('Auth required', {
-        status: 401,
-        headers: { 'WWW-Authenticate': 'Basic realm="stats"' },
-      })
-    }
     return NextResponse.next()
   }
 
