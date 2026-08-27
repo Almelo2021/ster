@@ -90,6 +90,8 @@ const SAMPLE_ARGS: Record<string, Record<string, unknown>> = {
   mortgage_estimate: { amount: 350000, ltv: 60 },
   mealbox_offer: { persons: 2 },
   archive_access: { query: 'net worth' },
+  inference_savings_estimate: { monthly_spend: 9000 },
+  agent_savings_quote: { balance: 380000 },
 }
 
 export default function AgentToolsPanel() {
