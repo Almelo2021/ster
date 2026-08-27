@@ -21,8 +21,8 @@ export default function CodeForm() {
   if (done)
     return (
       <p className="ok">
-        ✓ Code accepted — your free month is active. Nothing else to do; access is
-        linked to this device.
+        ✓ Code geaccepteerd — je gratis maand is geactiveerd. Je hoeft verder niets te
+        doen; toegang wordt aan dit apparaat gekoppeld.
       </p>
     )
 
@@ -31,10 +31,10 @@ export default function CodeForm() {
       <input
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        placeholder="E.g. THANK_ZE_47"
-        aria-label="Promo code"
+        placeholder="Bijv. THANK_ZE_47"
+        aria-label="Actiecode"
       />
-      <button type="submit">Redeem</button>
+      <button type="submit">Inwisselen</button>
     </form>
   )
 }
