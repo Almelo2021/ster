@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ARTICLES, getArticle } from '../../../lib/articles'
 
+const CATEGORY_LABEL: Record<string, string> = {
+  music: 'Music',
+  food: 'Food & drink',
+  media: 'Media',
+  'real-estate': 'Real estate',
+}
+
 export function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }))
 }
@@ -11,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const art = getArticle(slug)
   return art
     ? { title: `${art.title} — Sterradar`, description: art.lede }
-    : { title: 'Artikel — Sterradar' }
+    : { title: 'Article — Sterradar' }
 }
 
 export default async function ArtikelPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -22,9 +29,9 @@ export default async function ArtikelPage({ params }: { params: Promise<{ slug: 
   return (
     <article className="article-full">
       <div className="article-meta">
-        <span className="cat-badge">{art.category}</span>
+        <span className="cat-badge">{CATEGORY_LABEL[art.category] ?? art.category}</span>
         <time dateTime={art.date}>
-          {new Date(art.date).toLocaleDateString('nl-NL', {
+          {new Date(art.date).toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
@@ -37,15 +44,16 @@ export default async function ArtikelPage({ params }: { params: Promise<{ slug: 
         <p key={i}>{p}</p>
       ))}
       <p className="article-bronnen">
-        <strong>Bronnen:</strong> {art.bronnen}
+        <strong>Sources:</strong> {art.bronnen}
       </p>
 
-      {/* AgentAds: contextsignaal + mountpunt voor de gesponsorde-tools-widget.
-          De SDK (layout) leest data-context en draait hier de veiling voor. */}
+      {/* AgentAds: context signal + mount point for the sponsored-tools widget.
+          The SDK (loaded in the layout) reads data-context and runs the
+          auction for this spot. */}
       <div data-agentads-slot data-context={art.category} className="agentads-mount" />
 
       <p>
-        <Link href="/artikelen">← Alle artikelen</Link>
+        <Link href="/artikelen">← All articles</Link>
       </p>
     </article>
   )

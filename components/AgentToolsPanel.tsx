@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useEffect, useState } from 'react'
 import { ARTICLES, getArticle, searchArticles } from '../lib/articles'
 import {
@@ -10,15 +10,15 @@ import {
   type WebMCPTool,
 } from '../lib/webmcp'
 
-// De site-eigen WebMCP-tools plus een voor mensen zichtbaar paneel: dezelfde
-// toollijst die een agent ziet, met probeer-knoppen en een live call-log
-// waarin ook de gesponsorde calls van de AgentAds-SDK verschijnen.
+// The site's own WebMCP tools plus a human-visible panel: the same tool list
+// an agent sees, with try buttons and a live call log that also shows the
+// sponsored calls made through the AgentAds SDK.
 
 function buildSiteTools(): WebMCPTool[] {
   return [
     {
       name: 'list_articles',
-      title: 'Artikelen op Sterradar',
+      title: 'Articles on Sterradar',
       description:
         'List all editorial articles on Sterradar with slug, title, category, date and URL.',
       inputSchema: { type: 'object', properties: {} },
@@ -36,7 +36,7 @@ function buildSiteTools(): WebMCPTool[] {
     },
     {
       name: 'read_article',
-      title: 'Artikel lezen',
+      title: 'Read article',
       description:
         'Read the full text of a Sterradar article by its slug (see list_articles).',
       inputSchema: {
@@ -54,17 +54,17 @@ function buildSiteTools(): WebMCPTool[] {
           category: art.category,
           lede: art.lede,
           body: art.body.join('\n\n'),
-          bronnen: art.bronnen,
+          sources: art.bronnen,
         })
       },
     },
     {
       name: 'search_articles',
-      title: 'Artikelen doorzoeken',
+      title: 'Search articles',
       description: 'Full-text search across all Sterradar articles. Returns matching articles.',
       inputSchema: {
         type: 'object',
-        properties: { query: { type: 'string', description: 'Search terms (Dutch)' } },
+        properties: { query: { type: 'string', description: 'Search terms' } },
         required: ['query'],
       },
       annotations: { readOnlyHint: true },
@@ -81,11 +81,11 @@ function buildSiteTools(): WebMCPTool[] {
   ]
 }
 
-// Voorbeeldargumenten voor de probeer-knoppen, zodat één klik volstaat.
+// Sample arguments for the try buttons, so a single click suffices.
 const SAMPLE_ARGS: Record<string, Record<string, unknown>> = {
   list_articles: {},
   read_article: { slug: 'jesse-vondel-clubtour' },
-  search_articles: { query: 'vermogen' },
+  search_articles: { query: 'net worth' },
 }
 
 export default function AgentToolsPanel() {
@@ -98,7 +98,7 @@ export default function AgentToolsPanel() {
     const siteTools = buildSiteTools()
     setTools(siteTools)
     setActive(registerTools(siteTools))
-    // runtimes die pas ná paginalading injecteren (extensies, agent-browsers)
+    // runtimes that inject only after page load (extensions, agent browsers)
     onRuntime((a) => setActive(a))
 
     const onCall = (e: Event) => {
@@ -112,7 +112,7 @@ export default function AgentToolsPanel() {
   async function tryTool(tool: WebMCPTool) {
     const args = SAMPLE_ARGS[tool.name] ?? {}
     const result = await tool.execute(args)
-    emitToolCall({ name: tool.name, args, result, source: 'mens', sponsored: false, ts: Date.now() })
+    emitToolCall({ name: tool.name, args, result, source: 'human', sponsored: false, ts: Date.now() })
   }
 
   return (
@@ -121,8 +121,8 @@ export default function AgentToolsPanel() {
         <div className="agent-panel-body">
           <div className="agent-panel-status">
             {active
-              ? '● WebMCP actief — deze pagina biedt tools aan jouw agent'
-              : '○ Wacht op WebMCP-runtime… WebMCP is experimenteel: het werkt in de in-app browser van ChatGPT en in Chrome met de WebMCP-flag of origin-trial. Verschijnt de runtime alsnog, dan melden de tools zich automatisch aan. Hieronder kun je ze intussen met de hand proberen.'}
+              ? '● WebMCP active — this page is offering tools to your agent'
+              : '○ Waiting for a WebMCP runtime… WebMCP is experimental: it works in ChatGPT’s in-app browser and in Chrome with the WebMCP flag or origin trial. If a runtime appears, the tools register automatically. In the meantime you can try them by hand below.'}
           </div>
           <ul className="agent-panel-tools">
             {tools.map((t) => (
@@ -131,22 +131,22 @@ export default function AgentToolsPanel() {
                   <code>{t.name}</code>
                   <span>{t.description}</span>
                 </div>
-                <button onClick={() => tryTool(t)}>Probeer</button>
+                <button onClick={() => tryTool(t)}>Try</button>
               </li>
             ))}
           </ul>
           <div className="agent-panel-log">
-            <h4>Live call-log</h4>
-            {log.length === 0 && <p className="agent-panel-empty">Nog geen tool-calls.</p>}
+            <h4>Live call log</h4>
+            {log.length === 0 && <p className="agent-panel-empty">No tool calls yet.</p>}
             {log.map((c, i) => (
               <details key={i}>
                 <summary>
-                  <span className={c.source === 'agent' ? 'badge badge-agent' : 'badge badge-mens'}>
-                    {c.source === 'agent' ? 'AGENT' : 'MENS'}
+                  <span className={c.source === 'agent' ? 'badge badge-agent' : 'badge badge-human'}>
+                    {c.source === 'agent' ? 'AGENT' : 'HUMAN'}
                   </span>
-                  {c.sponsored && <span className="badge badge-sponsored">GESPONSORD</span>}
+                  {c.sponsored && <span className="badge badge-sponsored">SPONSORED</span>}
                   <code>{c.name}</code>
-                  <time>{new Date(c.ts).toLocaleTimeString('nl-NL')}</time>
+                  <time>{new Date(c.ts).toLocaleTimeString('en-GB')}</time>
                 </summary>
                 <pre>
                   {JSON.stringify(c.args)}
@@ -159,7 +159,7 @@ export default function AgentToolsPanel() {
         </div>
       )}
       <button className="agent-panel-toggle" onClick={() => setOpen((o) => !o)}>
-        {open ? '✕ Sluit' : `⚙ Agent-tools (${tools.length})`}
+        {open ? '✕ Close' : `⚙ Agent tools (${tools.length})`}
       </button>
     </div>
   )

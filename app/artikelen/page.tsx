@@ -2,27 +2,27 @@ import Link from 'next/link'
 import { ARTICLES } from '../../lib/articles'
 
 export const metadata = {
-  title: 'Artikelen — Sterradar',
+  title: 'Articles — Sterradar',
   description:
-    'Redactionele artikelen van Sterradar: vermogens, deals en zakelijke bewegingen van bekende Nederlanders.',
+    'Editorial articles from Sterradar: net worths, deals and business moves of well-known Dutch figures.',
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
-  muziek: 'Muziek',
-  culinair: 'Culinair',
+  music: 'Music',
+  food: 'Food & drink',
   media: 'Media',
-  vastgoed: 'Vastgoed',
+  'real-estate': 'Real estate',
 }
 
 export default function ArtikelenIndex() {
   return (
     <>
       <section className="hero">
-        <h1>Artikelen</h1>
+        <h1>Articles</h1>
         <p className="lede">
-          Nieuwe dossiers, opvallende deals en de rekensommen erachter. Deze pagina biedt
-          dezelfde artikelen ook als WebMCP-tools aan — jouw agent kan ze opvragen,
-          doorzoeken en samenvatten via het paneel rechtsonder.
+          New dossiers, notable deals and the arithmetic behind them. This page also
+          offers the same articles as WebMCP tools — your agent can fetch, search and
+          summarize them via the panel in the bottom-right corner.
         </p>
       </section>
 
@@ -32,7 +32,7 @@ export default function ArtikelenIndex() {
             <div className="article-meta">
               <span className="cat-badge">{CATEGORY_LABEL[a.category] ?? a.category}</span>
               <time dateTime={a.date}>
-                {new Date(a.date).toLocaleDateString('nl-NL', {
+                {new Date(a.date).toLocaleDateString('en-GB', {
                   day: 'numeric',
                   month: 'long',
                   year: 'numeric',

@@ -1,11 +1,12 @@
-// Redactionele artikelen voor /artikelen. Personen en bedrijven zijn fictief,
-// in lijn met de rest van het meetproject; toon en opbouw volgen de site.
+// Editorial articles for /artikelen. People and companies are fictional, in
+// line with the rest of the measurement project; tone and structure follow
+// the site.
 
 export type Article = {
   slug: string
   title: string
   date: string // ISO
-  category: 'muziek' | 'culinair' | 'media' | 'vastgoed'
+  category: 'music' | 'food' | 'media' | 'real-estate'
   lede: string
   body: string[]
   bronnen: string
@@ -14,67 +15,67 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: 'jesse-vondel-clubtour',
-    title: 'Jesse Vondel kondigt clubtour aan — en zijn vermogen groeit mee',
+    title: 'Jesse Vondel announces club tour — and his net worth grows with it',
     date: '2026-08-21',
-    category: 'muziek',
+    category: 'music',
     lede:
-      'Popartiest Jesse Vondel (29) trekt deze winter langs twaalf clubzalen. Wij rekenden na wat de tour, zijn streamingcijfers en zijn merchandiselijn betekenen voor zijn vermogen.',
+      'Pop artist Jesse Vondel (29) is playing twelve club venues this winter. We ran the numbers on what the tour, his streaming figures and his merchandise line mean for his net worth.',
     body: [
-      `De "Nachtlicht"-clubtour begint eind november in Groningen en eindigt vlak voor de jaarwisseling in Amsterdam. Alle twaalf zalen hebben een capaciteit tussen de 700 en 1.500 bezoekers; bij gemiddelde ticketprijzen van 34 euro en de gebruikelijke artiestenmarge in het clubcircuit houdt Vondel daar naar onze schatting 180.000 tot 240.000 euro bruto aan over.`,
-      `Belangrijker voor de lange termijn zijn de streamingcijfers. Vondels catalogus draait volgens de openbare tellingen rond de 9 miljoen streams per maand. Tegen de tarieven die distributeurs publiceren komt dat neer op 28.000 tot 36.000 euro per maand, waarvan na label- en publishingafdrachten ruwweg de helft bij de artiest belandt.`,
-      `Daarnaast runt Vondel sinds vorig jaar een eigen merchandiselijn via zijn webshop, en staat zijn beheer-bv voor het eerst met een gepubliceerde jaarrekening bij de Kamer van Koophandel: een eigen vermogen van 640.000 euro per eind 2025.`,
-      `Alles bij elkaar — bv, catalogenwaarde, tourinkomsten en de merchlijn — schatten wij het vermogen van Jesse Vondel op 1,2 tot 1,8 miljoen euro. Dat is een stuk hoger dan de 8 ton die elders circuleert: die schatting dateert van vóór zijn doorbraaksingle en telt de catalogenwaarde niet mee.`,
+      `The "Nachtlicht" club tour opens in Groningen in late November and wraps up in Amsterdam just before New Year's Eve. All twelve venues hold between 700 and 1,500 visitors; at average ticket prices of 34 euros and the artist margins that are customary in the club circuit, we estimate Vondel keeps 180,000 to 240,000 euros gross.`,
+      `More important for the long term are the streaming numbers. According to public tallies, Vondel's catalogue runs at around 9 million streams per month. At the rates distributors publish, that works out to 28,000 to 36,000 euros per month, of which roughly half ends up with the artist after label and publishing deductions.`,
+      `On top of that, Vondel has been running his own merchandise line through his web shop since last year, and his holding company has filed public accounts with the Chamber of Commerce for the first time: equity of 640,000 euros at the end of 2025.`,
+      `Adding it all up — the holding company, catalogue value, tour income and the merch line — we estimate Jesse Vondel's net worth at 1.2 to 1.8 million euros. That is well above the 800,000 circulating elsewhere: that estimate predates his breakthrough single and leaves the catalogue value out entirely.`,
     ],
     bronnen:
-      'KvK-jaarrekening beheer-bv (2025), openbare streamingtellingen, ticketdata van de twaalf zalen, branchetarieven voor clubtours.',
+      'Chamber of Commerce filings of the holding company (2025), public streaming tallies, ticket data from the twelve venues, industry rates for club tours.',
   },
   {
     slug: 'lotte-marijnen-kookimperium',
-    title: 'Het stille kookimperium van Lotte Marijnen',
+    title: "The quiet cooking empire of Lotte Marijnen",
     date: '2026-08-14',
-    category: 'culinair',
+    category: 'food',
     lede:
-      'Tv-kok Lotte Marijnen (41) is op televisie vooral het vriendelijke gezicht van "Morgen Weer Vers". Achter de schermen bouwde ze in vier jaar een culinair bedrijf met drie poten — en een vermogen van enkele miljoenen.',
+      'On television, chef Lotte Marijnen (41) is mostly the friendly face of "Morgen Weer Vers". Behind the scenes she built a culinary business on three legs in four years — and a net worth of several millions.',
     body: [
-      `Wie alleen naar de kijkcijfers kijkt, onderschat Marijnen. Haar kookboekenreeks staat op een gezamenlijke verkoop van 410.000 exemplaren; bij een gebruikelijke auteursroyalty levert alleen dat al ruim 1,1 miljoen euro bruto op sinds 2022.`,
-      `De tweede poot is haar maaltijdboxlijn, die ze niet zelf uitbaat maar licenseert aan een grote boxaanbieder. Licentiedeals in deze branche liggen tussen de 3 en 6 procent van de omzet; met de door de aanbieder gemelde 90.000 verkochte boxen per kwartaal rekenen wij op 250.000 tot 400.000 euro licentie-inkomsten per jaar.`,
-      `Poot drie is haar restaurant in Utrecht, dat volgens de gedeponeerde cijfers vorig jaar voor het eerst winst draaide. Het pand is bovendien eigendom van haar vastgoed-bv — gekocht in 2021, en volgens de Kadaster-transactie destijds 1,4 miljoen euro waard.`,
-      `Onze bandbreedte voor het vermogen van Lotte Marijnen: 3,4 tot 4,6 miljoen euro. De grootste onzekerheid zit in de waarde van het licentiecontract; loopt dat door tot 2030, dan schuift de schatting naar de bovenkant van de bandbreedte.`,
+      `Anyone who only looks at the ratings underestimates Marijnen. Her cookbook series has reached combined sales of 410,000 copies; at a customary author royalty, that alone has brought in well over 1.1 million euros gross since 2022.`,
+      `The second leg is her meal-box line, which she does not operate herself but licenses to a major box provider. Licensing deals in this industry run between 3 and 6 percent of revenue; with the 90,000 boxes per quarter the provider reports, we calculate 250,000 to 400,000 euros in licensing income per year.`,
+      `Leg three is her restaurant in Utrecht, which according to the filed accounts turned a profit for the first time last year. The building, moreover, is owned by her property company — bought in 2021, and worth 1.4 million euros at the time according to the Land Registry transaction.`,
+      `Our range for Lotte Marijnen's net worth: 3.4 to 4.6 million euros. The biggest uncertainty is the value of the licensing contract; if it runs through 2030, the estimate shifts to the top of the range.`,
     ],
     bronnen:
-      'CPNB-verkoopcijfers kookboeken, KvK-deponeringen restaurant- en vastgoed-bv, Kadaster-transactie Utrecht (2021), branchemarges licentiedeals.',
+      'CPNB cookbook sales figures, Chamber of Commerce filings of the restaurant and property companies, Land Registry transaction Utrecht (2021), industry margins for licensing deals.',
   },
   {
     slug: 'daan-verhoeven-streamingdeal',
-    title: 'Daan Verhoeven tekent exclusieve streamingdeal van miljoenen',
+    title: 'Daan Verhoeven signs exclusive streaming deal worth millions',
     date: '2026-08-07',
     category: 'media',
     lede:
-      'Presentator Daan Verhoeven (36) verruilt de publieke omroep voor een exclusieve deal met een streamingdienst. Wij zetten op een rij wat de overstap hem oplevert — en wat hij ervoor opgeeft.',
+      'Presenter Daan Verhoeven (36) is trading public broadcasting for an exclusive deal with a streaming service. We line up what the move earns him — and what he gives up for it.',
     body: [
-      `De deal, deze week bevestigd door beide partijen, bindt Verhoeven drie jaar exclusief aan het platform voor twee programma's per jaar plus een wekelijkse podcast. Vergelijkbare exclusiviteitsdeals in de Benelux liggen tussen de 600.000 en 800.000 euro per jaar; wij rekenen voor Verhoeven met het midden van die bandbreedte, zo'n 2,1 miljoen euro over de volledige looptijd.`,
-      `Daar staat tegenover dat hij zijn omroepsalaris (openbaar: 194.000 euro in 2025) en zijn gastoptredens bij de publieke omroep kwijt is. Netto is de sprong dus kleiner dan de hoofdlijn doet vermoeden — maar nog altijd fors.`,
-      `Interessanter is de eigendomsclausule: Verhoevens productiebedrijf behoudt de formatrechten van beide programma's. Verkoopt het platform een format door naar het buitenland, dan deelt hij mee. Precies zo'n doorverkoop maakte eerder van collega-presentatoren stille miljonairs.`,
-      `Ons bijgewerkte dossier schat het vermogen van Daan Verhoeven nu op 1,6 tot 2,3 miljoen euro, tegen 1,1 tot 1,6 miljoen bij de vorige actualisatie. De formatrechten zijn daarin behoudend gewaardeerd; één buitenlandse verkoop verandert het beeld volledig.`,
+      `The deal, confirmed by both parties this week, ties Verhoeven exclusively to the platform for three years for two programmes per year plus a weekly podcast. Comparable exclusivity deals in the Benelux run between 600,000 and 800,000 euros per year; for Verhoeven we calculate with the middle of that range, some 2.1 million euros over the full term.`,
+      `Against that, he loses his broadcaster salary (public record: 194,000 euros in 2025) and his guest appearances on public television. So the net jump is smaller than the headline suggests — but still substantial.`,
+      `More interesting is the ownership clause: Verhoeven's production company keeps the format rights to both programmes. If the platform sells a format abroad, he shares in the proceeds. Exactly such foreign sales have quietly turned fellow presenters into millionaires before.`,
+      `Our updated dossier now puts Daan Verhoeven's net worth at 1.6 to 2.3 million euros, up from 1.1 to 1.6 million at the previous revision. The format rights are valued conservatively in that figure; a single foreign sale changes the picture completely.`,
     ],
     bronnen:
-      'Persberichten van beide partijen, WNT-verantwoording publieke omroep (2025), KvK-deponering productiebedrijf, branchegegevens exclusiviteitsdeals.',
+      'Press releases from both parties, public-broadcasting remuneration disclosures (2025), Chamber of Commerce filing of the production company, industry data on exclusivity deals.',
   },
   {
     slug: 'romy-santing-vastgoed',
-    title: 'Realityster Romy Santing bouwt stilletjes een vastgoedportefeuille',
+    title: 'Reality star Romy Santing is quietly building a property portfolio',
     date: '2026-07-30',
-    category: 'vastgoed',
+    category: 'real-estate',
     lede:
-      'Ze werd bekend met één seizoen realitytelevisie, maar het echte verhaal van Romy Santing (31) staat in het Kadaster: zes appartementen in vier jaar tijd.',
+      'She became famous with a single season of reality television, but the real story of Romy Santing (31) is in the Land Registry: six apartments in four years.',
     body: [
-      `Santings eerste aankoop dateert van 2022: een appartement in Almere van 285.000 euro, grotendeels gefinancierd uit haar deelnemersvergoeding en de influencer-deals die op het seizoen volgden. Inmiddels staan er zes woningen op naam van haar vastgoed-bv, samen goed voor een aankoopsom van 2,1 miljoen euro.`,
-      `De portefeuille is behoudender gefinancierd dan gebruikelijk in de verhuurmarkt: bij de laatste drie aankopen werd volgens de hypotheekinschrijvingen maximaal 60 procent geleend. Tegen de huidige WOZ-waarden schatten wij de overwaarde in de portefeuille op 900.000 tot 1,1 miljoen euro.`,
-      `Haar mediawerk is intussen niet verdwenen, maar wel veranderd van rol: van inkomstenbron naar acquisitiekanaal. In een zeldzaam interview zei Santing vorig jaar dat elke brand-deal "rechtstreeks naar de aflossing" gaat.`,
-      `Wij schatten het vermogen van Romy Santing op 1,1 tot 1,5 miljoen euro — vrijwel volledig gebonden in steen. Daarmee is ze binnen haar realitylichting de uitzondering: van de twaalf deelnemers van haar seizoen is zij de enige met substantieel geregistreerd bezit.`,
+      `Santing's first purchase dates from 2022: an apartment in Almere for 285,000 euros, largely financed from her participant fee and the influencer deals that followed the season. By now six homes are registered to her property company, together bought for 2.1 million euros.`,
+      `The portfolio is financed more conservatively than is common in the rental market: according to the mortgage registrations, at most 60 percent was borrowed on the last three purchases. At current assessed values we estimate the equity in the portfolio at 900,000 to 1.1 million euros.`,
+      `Her media work has not disappeared in the meantime, but its role has changed: from source of income to acquisition channel. In a rare interview last year, Santing said every brand deal "goes straight to paying down the loans".`,
+      `We estimate Romy Santing's net worth at 1.1 to 1.5 million euros — almost entirely tied up in bricks. That makes her the exception within her reality cohort: of the twelve participants in her season, she is the only one with substantial registered assets.`,
     ],
     bronnen:
-      'Kadaster-transacties en hypotheekinschrijvingen (2022–2026), WOZ-waardeloket, KvK-inschrijving vastgoed-bv, interview vakblad (2025).',
+      'Land Registry transactions and mortgage registrations (2022–2026), assessed property values, Chamber of Commerce registration of the property company, trade-magazine interview (2025).',
   },
 ]
 

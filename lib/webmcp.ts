@@ -1,9 +1,9 @@
-// WebMCP compat-laag. De spec verhuist tussen navigator.modelContext en
-// document.modelContext, en oudere implementaties kennen alleen
-// provideContext() (die de hele toolset vervangt). Daarom houden we één
-// gedeeld register op window bij; iedere partij (site of embedded SDK) die
-// registreert, flusht het volledige register wanneer alleen provideContext
-// bestaat. De AgentAds-SDK (public/agentads-sdk.js) volgt dezelfde conventie.
+// WebMCP compat layer. The spec has moved between navigator.modelContext and
+// document.modelContext, and older implementations only know provideContext()
+// (which replaces the whole toolset). So we keep one shared registry on
+// window; any party (site or embedded SDK) that registers flushes the full
+// registry when only provideContext exists. The AgentAds SDK
+// (public/agentads-sdk.js) follows the same convention.
 
 export type WebMCPTool = {
   name: string
@@ -18,7 +18,7 @@ export type ToolCallDetail = {
   name: string
   args: Record<string, unknown>
   result: unknown
-  source: 'agent' | 'mens'
+  source: 'agent' | 'human'
   sponsored: boolean
   ts: number
 }
@@ -65,9 +65,9 @@ function withLogging(tool: WebMCPTool, sponsored: boolean): WebMCPTool {
   }
 }
 
-// Nog niet bij een runtime aangemelde tools van déze module (de SDK houdt
-// zijn eigen lijst bij; de provideContext-fallback gebruikt altijd het
-// volledige gedeelde register, dus dubbel aanroepen is onschadelijk).
+// Tools from this module not yet registered with a runtime (the SDK keeps
+// its own list; the provideContext fallback always uses the full shared
+// registry, so calling it twice is harmless).
 const pending: WebMCPTool[] = []
 const runtimeSubs: Array<(active: boolean) => void> = []
 let watching = false
@@ -89,9 +89,9 @@ function flush(mc: any): boolean {
   }
 }
 
-// Sommige runtimes (extensie-polyfills, agent-browsers) injecteren
-// modelContext pas ná onze registratie. Blijf daarom even kijken en meld
-// alles alsnog aan zodra de runtime verschijnt.
+// Some runtimes (extension polyfills, agent browsers) inject modelContext
+// only after we register. So keep watching for a while and register
+// everything the moment the runtime appears.
 function watchForRuntime() {
   if (watching) return
   watching = true
@@ -110,7 +110,7 @@ function watchForRuntime() {
   setTimeout(check, 500)
 }
 
-// Meldt aan zodra er (nu of later) een runtime is; cb vuurt bij activatie.
+// Subscribes to runtime availability (now or later); cb fires on activation.
 export function onRuntime(cb: (active: boolean) => void) {
   runtimeSubs.push(cb)
   if (runtimeActive) cb(true)
@@ -131,8 +131,8 @@ export function registerTools(tools: WebMCPTool[], sponsored = false): boolean {
   return false
 }
 
-// MCP-stijl resultaat; wordt door zowel de spec-serialisatie als
-// provideContext-implementaties begrepen.
+// MCP-style result; understood by both the spec serialization and
+// provideContext implementations.
 export function textResult(data: unknown) {
   const text = typeof data === 'string' ? data : JSON.stringify(data, null, 2)
   return { content: [{ type: 'text', text }] }

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Registreert gesponsorde tool-calls en conversies. Logt naar dezelfde
-// Supabase-tabel als de middleware (event: agentads_call / agentads_conversion,
-// code: offer-id) zodat alles in /stats terug te vinden is.
+// Records sponsored tool calls and conversions. Logs to the same Supabase
+// table as the middleware (event: agentads_call / agentads_conversion,
+// code: offer id) so everything can be found back in /stats.
 export async function POST(req: NextRequest) {
   let type = 'call',
     offerId = '',

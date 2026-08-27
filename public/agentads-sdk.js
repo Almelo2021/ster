@@ -1,44 +1,44 @@
-/*!
+﻿/*!
  * AgentAds SDK v0.1 — monetize your WebMCP surface.
  *
- * Eén scripttag maakt van een pagina met WebMCP-tools een advertentie-oppervlak
- * voor agents. De SDK vraagt de AgentAds-marktplaats om een veiling voor de
- * context van deze pagina (ranking = evalScore × bod, winnaar betaalt
- * kwaliteitsgewogen tweede prijs), registreert de winnende tool(s) als
- * duidelijk gemarkeerde GESPONSORDE WebMCP-tools, en betaalt de site-eigenaar
- * per tool-call (rev-share).
+ * One script tag turns a page with WebMCP tools into an advertising surface
+ * for agents. The SDK asks the AgentAds marketplace for an auction for this
+ * page's context (ranking = evalScore × bid; the winner pays a
+ * quality-weighted second price), registers the winning tool(s) as clearly
+ * marked SPONSORED WebMCP tools, and pays the site owner per tool call
+ * (rev share).
  *
- * Principes:
- *  - Additief: gesponsorde tools komen NAAST de eigen tools van de site,
- *    nooit in de plaats ervan.
- *  - Disclosed: naamprefix "sponsored_", beschrijving begint met
- *    "[SPONSORED · adverteerder]", annotations.sponsored = true. Agents en
- *    gebruikers kunnen ze herkennen en desgewenst negeren.
- *  - Zichtbaar voor mensen: de widget toont de live veiling, de verdiensten
- *    van de site-eigenaar en iedere gesponsorde call.
+ * Principles:
+ *  - Additive: sponsored tools sit NEXT TO the site's own tools, never in
+ *    their place.
+ *  - Disclosed: name prefix "sponsored_", description starts with
+ *    "[SPONSORED · advertiser]", annotations.sponsored = true. Agents and
+ *    users can recognize them and ignore them if they wish.
+ *  - Visible to humans: the widget shows the live auction, the site owner's
+ *    earnings and every sponsored call.
  *
- * Gebruik: <script src="/agentads-sdk.js" data-publisher="jouw-site" defer></script>
- * Optioneel op de pagina: <div data-agentads-slot data-context="muziek"></div>
+ * Usage: <script src="/agentads-sdk.js" data-publisher="your-site" defer></script>
+ * Optional on the page: <div data-agentads-slot data-context="music"></div>
  */
 ;(function () {
   'use strict'
 
   var script = document.currentScript
-  var PUBLISHER = (script && script.dataset.publisher) || 'onbekend'
+  var PUBLISHER = (script && script.dataset.publisher) || 'unknown'
   var API = (script && script.dataset.api) || '/api/agentads'
   var LS_KEY = 'agentads-earnings-' + PUBLISHER
 
   function euro(n) {
-    return '€' + n.toFixed(2).replace('.', ',')
+    return '€' + n.toFixed(2)
   }
 
   function getModelContext() {
     return (navigator && navigator.modelContext) || (document && document.modelContext) || null
   }
 
-  // Zelfde registerconventie als de site (lib/webmcp.ts): gedeeld register op
-  // window, zodat provideContext-implementaties altijd de unie van alle tools
-  // krijgen en niemand elkaars registraties overschrijft.
+  // Same registration convention as the site (lib/webmcp.ts): a shared
+  // registry on window, so provideContext implementations always receive the
+  // union of all tools and nobody overwrites anyone else's registrations.
   function tryRegister(tools) {
     var mc = getModelContext()
     if (!mc) return false
@@ -58,8 +58,8 @@
     }
   }
 
-  // Registreer nu, of zodra een laat-injecterende runtime (extensie-polyfill,
-  // agent-browser) alsnog verschijnt; onRuntime vuurt bij activatie.
+  // Register now, or as soon as a late-injecting runtime (extension
+  // polyfill, agent browser) shows up after all; onRuntime fires on activation.
   function registerTools(tools, onRuntime) {
     var registry = (window.__webmcpTools = window.__webmcpTools || [])
     registry.push.apply(registry, tools)
@@ -151,19 +151,19 @@
 
     box.appendChild(
       h('h5', null,
-        '<span>AgentAds · gesponsorde agent-tools</span><span class="tag">ADVERTENTIE</span>'),
+        '<span>AgentAds · sponsored agent tools</span><span class="tag">ADVERTISEMENT</span>'),
     )
     var body = h('div', { class: 'agentads-body' })
     body.innerHTML =
-      '<div class="earn"><span>Verdiensten site-eigenaar<br><small>' +
-      Math.round(auction.revShare * 100) + '% rev-share · per call</small></span>' +
+      '<div class="earn"><span>Site-owner earnings<br><small>' +
+      Math.round(auction.revShare * 100) + '% rev share · per call</small></span>' +
       '<strong id="agentads-earned">' + euro(earned) + '</strong></div>' +
-      '<table><tr><th>Bieder (' + esc(auction.context) + ')</th><th>eval</th><th>bod</th><th>rank</th></tr>' +
+      '<table><tr><th>Bidder (' + esc(auction.context) + ')</th><th>eval</th><th>bid</th><th>rank</th></tr>' +
       rows + '</table>' +
       '<div id="agentads-tools"></div>' +
       '<div class="log" id="agentads-log"></div>' +
-      '<div class="muted">Veiling: evalScore × bod, winnaar betaalt kwaliteitsgewogen tweede prijs. ' +
-      'Gesponsorde tools zijn additief en als zodanig gemarkeerd; agents kunnen ze negeren.</div>'
+      '<div class="muted">Auction: evalScore × bid; the winner pays a quality-weighted second price. ' +
+      'Sponsored tools are additive and marked as such; agents can ignore them.</div>'
     box.appendChild(body)
     ;(mount || document.body).appendChild(box)
 
@@ -185,7 +185,7 @@
     }
   }
 
-  // ---------- gesponsorde tools ----------
+  // ---------- sponsored tools ----------
 
   function buildTool(offer, auction, widget) {
     var execute = function (input) {
@@ -193,7 +193,7 @@
       var revenue = (offer.pricePaid || 0) * auction.revShare
       widget.addEarning(revenue)
       widget.log(
-        new Date().toLocaleTimeString('nl-NL') + ' · ' + offer.toolName + ' · +' + euro(revenue),
+        new Date().toLocaleTimeString('en-GB') + ' · ' + offer.toolName + ' · +' + euro(revenue),
       )
       var result = {
         disclosure:
@@ -250,28 +250,28 @@
         var winners = auction.ranking.filter(function (o) { return o.winner })
         var tools = winners.map(function (o) { return buildTool(o, auction, widget) })
         var registered = registerTools(tools, function () {
-          // runtime verscheen alsnog: labels bijwerken
+          // the runtime showed up after all: update the labels
           Array.prototype.forEach.call(
             widget.toolsEl().querySelectorAll('.agentads-live'),
-            function (el) { el.textContent = 'live voor agents' },
+            function (el) { el.textContent = 'live for agents' },
           )
-          widget.log('WebMCP-runtime gedetecteerd · tools aangemeld')
+          widget.log('WebMCP runtime detected · tools registered')
         })
 
         var toolsEl = widget.toolsEl()
         winners.forEach(function (o, i) {
           var row = h('div', { class: 'tool' })
           row.innerHTML =
-            '<button>Probeer</button><code>' + esc(o.toolName) + '</code><br><small>' +
+            '<button>Try</button><code>' + esc(o.toolName) + '</code><br><small>' +
             esc(o.product) + ' — ' + esc(o.advertiser) + ' · ' + euro(o.pricePaid || 0) +
             '/call · <span class="agentads-live">' +
-            (registered ? 'live voor agents' : 'wacht op WebMCP-runtime') + '</span></small>'
+            (registered ? 'live for agents' : 'waiting for WebMCP runtime') + '</span></small>'
           row.querySelector('button').addEventListener('click', function () {
             tools[i].execute({ demo: true })
           })
           toolsEl.appendChild(row)
         })
-        widget.log('veiling afgerond · ' + auction.ranking.length + ' bieders · context: ' + auction.context)
+        widget.log('auction complete · ' + auction.ranking.length + ' bidders · context: ' + auction.context)
       })
       .catch(function () {})
   }

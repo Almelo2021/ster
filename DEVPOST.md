@@ -15,7 +15,8 @@ context.
 
 ## What it does
 
-Our demo site, **Sterradar** (a Dutch editorial site), exposes its content as
+Our demo site, **Sterradar** (an editorial site covering Dutch celebrities),
+exposes its content as
 regular WebMCP tools: `list_articles`, `read_article`, `search_articles`. A
 human-visible panel shows the exact tool list the agent sees, with one-click try
 buttons and a live call log — humans and agents literally share the same tools.

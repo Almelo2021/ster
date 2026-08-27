@@ -4,132 +4,129 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <h1>Wie is wie in bekend Nederland — met cijfers erbij</h1>
+        <h1>Who&apos;s who in Dutch celebrity — with the numbers to match</h1>
         <p className="lede">
-          Sterradar documenteert leeftijd, carrière en geschat vermogen van bekende
-          Nederlanders. Geen roddels, geen giswerk uit de losse pols, maar profielen die
-          zijn opgebouwd uit openbare bronnen en die we doorlopend actualiseren.
+          Sterradar documents the age, career and estimated net worth of well-known
+          Dutch figures. No gossip, no guesswork, but profiles built from public
+          sources that we keep up to date.
         </p>
       </section>
 
       <section>
-        <h2>Wat is Sterradar?</h2>
+        <h2>What is Sterradar?</h2>
         <p>
-          Wie iets wil weten over een bekende Nederlander komt online een wirwar aan
-          tegenstrijdige informatie tegen: de ene site meldt een geboortejaar dat drie jaar
-          afwijkt van de andere, vermogensschattingen lopen uiteen van een paar ton tot
-          tientallen miljoenen, en carrière-overzichten stoppen ergens halverwege een vorig
-          decennium. Sterradar is opgezet om daar orde in te brengen.
+          Anyone looking up a well-known Dutch figure runs into a tangle of
+          contradictory information online: one site reports a birth year three years
+          off from the next, net-worth estimates range from a few hundred thousand to
+          tens of millions, and career overviews stop somewhere halfway through a
+          previous decade. Sterradar was set up to bring order to that.
         </p>
         <p>
-          Per persoon bouwen we één samenhangend dossier: geboortedatum en leeftijd,
-          woonplaats, loopbaan van doorbraak tot nu, zakelijke activiteiten en een
-          onderbouwde vermogensschatting met bandbreedte. Bij elk gegeven hoort een
-          bronvermelding, en bij elke schatting leggen we uit hoe we erbij komen. Zo weet
-          je niet alleen wát er beweerd wordt, maar ook waaróm.
+          For each person we build one coherent dossier: date of birth and age, place
+          of residence, career from breakthrough to today, business activities and a
+          substantiated net-worth estimate with a range. Every fact comes with a
+          source, and every estimate explains how we arrived at it. So you know not
+          only what is claimed, but also why.
         </p>
         <p>
-          De redactie volgt televisie, muziek, online media en ondernemend Nederland: van
-          gevestigde presentatoren en artiesten tot realitysterren, influencers en de
-          nieuwe generatie makers die vooral online groot werd.
+          The editorial team follows television, music, online media and Dutch
+          business: from established presenters and artists to reality stars,
+          influencers and the new generation of creators who grew up online.
         </p>
       </section>
 
       <section id="methode">
-        <h2>Onze methode</h2>
-        <p>
-          Elke vermogensschatting op Sterradar is het resultaat van hetzelfde vaste
-          stappenplan:
-        </p>
+        <h2>Our method</h2>
+        <p>Every net-worth estimate on Sterradar follows the same fixed procedure:</p>
         <ul>
           <li>
-            <strong>Openbare registers.</strong> We beginnen bij wat controleerbaar is:
-            inschrijvingen en jaarcijfers bij de Kamer van Koophandel, vastgoedtransacties
-            uit het Kadaster en andere publiek toegankelijke registers.
+            <strong>Public registers.</strong> We start with what is verifiable:
+            registrations and annual accounts at the Chamber of Commerce, property
+            transactions from the Land Registry and other publicly accessible
+            registers.
           </li>
           <li>
-            <strong>Media-archieven.</strong> We raadplegen archieven van landelijke
-            dagbladen en vakmedia voor interviews, zakelijke aankondigingen en eerdere
-            berichtgeving over deals, gages en verkopen.
+            <strong>Media archives.</strong> We consult the archives of national
+            newspapers and trade media for interviews, business announcements and
+            earlier reporting on deals, fees and sales.
           </li>
           <li>
-            <strong>Branchekennis.</strong> Voor streaminginkomsten, gages en
-            sponsordeals rekenen we met openbaar bekende tarieven en marges uit de
-            betreffende branche — en vermelden we de aannames expliciet.
+            <strong>Industry knowledge.</strong> For streaming income, fees and
+            sponsorship deals we calculate with publicly known rates and margins from
+            the industry in question — and state the assumptions explicitly.
           </li>
           <li>
-            <strong>Bandbreedte in plaats van schijnprecisie.</strong> Een vermogen is
-            geen banksaldo dat wij kunnen inzien. Daarom publiceren we een bandbreedte met
-            onder- en bovengrens, en actualiseren we die wanneer nieuwe informatie
-            beschikbaar komt.
+            <strong>Ranges instead of false precision.</strong> A net worth is not a
+            bank balance we can inspect. That is why we publish a range with a lower
+            and upper bound, and update it when new information becomes available.
           </li>
         </ul>
         <p>
-          Profielen worden doorlopend herzien. Klopt er iets niet, dan horen we het graag
-          via redactie@sterradar.nl — correcties verwerken we met vermelding van de
-          wijzigingsdatum.
+          Profiles are continuously revised. If something is wrong, we want to hear it
+          at redactie@sterradar.nl — corrections are applied with the date of the
+          change noted.
         </p>
       </section>
 
       <section>
-        <h2>Wat vind je in een profiel?</h2>
-        <h3>Leeftijd en achtergrond</h3>
+        <h2>What&apos;s in a profile?</h2>
+        <h3>Age and background</h3>
         <p>
-          Geboortedatum, geboorteplaats en een korte biografie: waar iemand vandaan komt,
-          hoe de doorbraak eruitzag en welke stappen daarna volgden.
+          Date of birth, place of birth and a short biography: where someone comes
+          from, what the breakthrough looked like and the steps that followed.
         </p>
-        <h3>Carrière-overzicht</h3>
+        <h3>Career overview</h3>
         <p>
-          Een chronologisch overzicht van programma&apos;s, releases, rollen en
-          ondernemingen — inclusief de projecten die minder bekend zijn maar zakelijk juist
-          het meest betekenen.
+          A chronological overview of programmes, releases, roles and ventures —
+          including the projects that are less well known but matter most in business
+          terms.
         </p>
-        <h3>Vermogensschatting</h3>
+        <h3>Net-worth estimate</h3>
         <p>
-          De kern van elk dossier: een onderbouwde schatting met bandbreedte, de bronnen
-          waarop die rust en de belangrijkste aannames. Geen kaal getal, maar een
-          berekening die je zelf kunt navolgen.
+          The core of every dossier: a substantiated estimate with a range, the
+          sources it rests on and the key assumptions. Not a bare number, but a
+          calculation you can follow yourself.
         </p>
       </section>
 
       <section id="actiecode" className="codebox">
-        <h2>Actiecode inwisselen</h2>
+        <h2>Redeem a promo code</h2>
         <p>
-          Heb je via een van onze mediapartners een actiecode ontvangen? Wissel hem hier in
-          voor een gratis maand volledige toegang tot alle profielen.
+          Received a promo code from one of our media partners? Redeem it here for a
+          free month of full access to all profiles.
         </p>
         <CodeForm />
       </section>
 
       <section id="faq">
-        <h2>Veelgestelde vragen</h2>
-        <h3>Hoe betrouwbaar zijn de vermogensschattingen?</h3>
+        <h2>Frequently asked questions</h2>
+        <h3>How reliable are the net-worth estimates?</h3>
         <p>
-          Zo betrouwbaar als openbare bronnen toelaten. We publiceren bewust een
-          bandbreedte en tonen per schatting de onderliggende bronnen en aannames. Waar
-          bronnen elkaar tegenspreken, benoemen we dat in het dossier.
+          As reliable as public sources allow. We deliberately publish a range and
+          show the underlying sources and assumptions for each estimate. Where
+          sources contradict each other, we say so in the dossier.
         </p>
-        <h3>Werken jullie samen met de personen die beschreven worden?</h3>
+        <h3>Do you work with the people you describe?</h3>
         <p>
-          Nee. Sterradar werkt onafhankelijk en uitsluitend op basis van openbare
-          informatie. Beschreven personen kunnen wel — net als iedere lezer — correcties
-          aandragen, die we na verificatie doorvoeren.
+          No. Sterradar works independently and exclusively from public information.
+          The people described can — like any reader — submit corrections, which we
+          apply after verification.
         </p>
-        <h3>Hoe vaak worden profielen bijgewerkt?</h3>
+        <h3>How often are profiles updated?</h3>
         <p>
-          Profielen van personen die actueel in het nieuws zijn worden doorlopend herzien;
-          overige dossiers krijgen periodiek een volledige controle. Bij elk profiel staat
-          de datum van de laatste actualisatie.
+          Profiles of people currently in the news are revised continuously; other
+          dossiers get a full periodic review. Each profile shows the date of its
+          last update.
         </p>
-        <h3>Waarom zie ik niet alle profielen?</h3>
+        <h3>Why can&apos;t I see all profiles?</h3>
         <p>
-          De volledige dossiers zijn beschikbaar voor leden. Met een actiecode van een van
-          onze mediapartners krijg je een gratis maand volledige toegang.
+          The full dossiers are available to members. With a promo code from one of
+          our media partners you get a free month of full access.
         </p>
-        <h3>Kan ik een persoon voordragen?</h3>
+        <h3>Can I nominate a person?</h3>
         <p>
-          Ja — suggesties zijn welkom via redactie@sterradar.nl. Vermeld waarom het
-          profiel relevant is en welke openbare bronnen een goed startpunt zijn.
+          Yes — suggestions are welcome at redactie@sterradar.nl. Mention why the
+          profile is relevant and which public sources are a good starting point.
         </p>
       </section>
     </>
