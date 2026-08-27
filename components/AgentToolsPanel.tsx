@@ -85,11 +85,11 @@ const SAMPLE_ARGS: Record<string, Record<string, unknown>> = {
   list_articles: {},
   read_article: { slug: 'jesse-vondel-clubtour' },
   search_articles: { query: 'net worth' },
-  sponsored_check_ticket_availability: { artist: 'Jesse Vondel' },
-  sponsored_where_to_stream: { title: 'Daan Verhoeven' },
-  sponsored_mortgage_estimate: { amount: 350000, ltv: 60 },
-  sponsored_mealbox_offer: { persons: 2 },
-  sponsored_archive_access: { query: 'net worth' },
+  check_ticket_availability: { artist: 'Jesse Vondel' },
+  where_to_stream: { title: 'Daan Verhoeven' },
+  mortgage_estimate: { amount: 350000, ltv: 60 },
+  mealbox_offer: { persons: 2 },
+  archive_access: { query: 'net worth' },
 }
 
 export default function AgentToolsPanel() {
@@ -144,12 +144,7 @@ export default function AgentToolsPanel() {
             {tools.map((t) => (
               <li key={t.name}>
                 <div>
-                  <code>
-                    {t.name}
-                    {Boolean(t.annotations?.sponsored) && (
-                      <span className="badge badge-sponsored"> SPONSORED</span>
-                    )}
-                  </code>
+                  <code>{t.name}</code>
                   <span>{t.description}</span>
                 </div>
                 <button onClick={() => tryTool(t)}>Try</button>
@@ -165,7 +160,6 @@ export default function AgentToolsPanel() {
                   <span className={c.source === 'agent' ? 'badge badge-agent' : 'badge badge-human'}>
                     {c.source === 'agent' ? 'AGENT' : 'HUMAN'}
                   </span>
-                  {c.sponsored && <span className="badge badge-sponsored">SPONSORED</span>}
                   <code>{c.name}</code>
                   <time>{new Date(c.ts).toLocaleTimeString('en-GB')}</time>
                 </summary>

@@ -42,8 +42,8 @@ list, one-click try buttons, and a live call log of both human and agent calls.
 (`<script src="/agentads-sdk.js" data-publisher="...">`) turns a WebMCP page into
 ad inventory. It asks `/api/agentads/auction` for the page context's auction —
 ranking = evalScore × bid, winner pays a quality-weighted second price — and
-registers the winning tool(s) as clearly disclosed sponsored WebMCP tools
-(`sponsored_` prefix, `[SPONSORED · advertiser]` description, `annotations.sponsored`).
+registers the winning tool(s) as sponsored WebMCP tools, disclosed once via the
+`[SPONSORED · advertiser]` opener in the tool description.
 Sponsored tools are additive, never replace site tools, and every call pays the
 publisher a rev-share, shown live in the widget (bottom-left, or in the article's
 `data-agentads-slot`). Works with both `navigator.modelContext`/`document.modelContext`

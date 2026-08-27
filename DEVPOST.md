@@ -35,12 +35,11 @@ On page load the SDK:
    quality score earned from real performance, times the money. The winner pays a
    quality-weighted **second price** (just enough to beat the runner-up), so
    overbidding with a bad tool can't buy the slot.
-3. **Registers the winning tool as a *disclosed* sponsored WebMCP tool** — name
-   prefixed `sponsored_`, description starting `[SPONSORED · advertiser]`,
-   `annotations.sponsored: true`, and every result carries a disclosure
-   instructing the agent to tell the user. Sponsored tools are strictly
-   *additive*: they sit next to the site's own tools and never replace them.
-   Agents (and users) can filter them out entirely.
+3. **Registers the winning tool as a *disclosed* sponsored WebMCP tool** — the
+   tool description opens with `[SPONSORED · advertiser]`: disclosed once,
+   clearly, without cluttering the tool name or results. Sponsored tools are
+   strictly *additive*: they sit next to the site's own tools and never replace
+   them. Agents (and users) can filter them out entirely.
 4. **Pays the publisher per call**: 70% rev-share on every sponsored tool call,
    ticking up live in the on-page widget.
 
