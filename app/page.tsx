@@ -1,121 +1,134 @@
+import Link from 'next/link'
+import AuctionExplainer from '../components/AuctionExplainer'
+
 export default function Home() {
   return (
     <>
-      <section className="hero">
-        <h1>Wie is wie in bekend Nederland — met cijfers erbij</h1>
+      <section className="x-hero">
+        <p className="kicker">AgentAds · An entry for the OpenAI WebMCP Challenge</p>
+        <h1>The web runs on ads. Agents don&rsquo;t see ads.</h1>
         <p className="lede">
-          Sterradar documenteert leeftijd, carrière en geschat vermogen van bekende
-          Nederlanders. Geen roddels, geen giswerk uit de losse pols, maar profielen die
-          zijn opgebouwd uit openbare bronnen en die we doorlopend actualiseren.
+          As browsing shifts to agents, every publisher&rsquo;s ad revenue quietly
+          disappears — agents don&rsquo;t scroll past banners. AgentAds is one script tag
+          that sells the surface agents <em>do</em> use: a sponsored slot in a page&rsquo;s
+          WebMCP tools, priced by an auction where quality beats money.
+        </p>
+        <p className="x-hero-links">
+          <Link className="btn" href="/artikelen/atlas-9-net-worth">
+            See it on a live article
+          </Link>
+          <a className="btn btn-ghost" href="#auction">
+            Run the auction
+          </a>
         </p>
       </section>
 
-      <section>
-        <h2>Wat is Sterradar?</h2>
-        <p>
-          Wie iets wil weten over een bekende Nederlander komt online een wirwar aan
-          tegenstrijdige informatie tegen: de ene site meldt een geboortejaar dat drie jaar
-          afwijkt van de andere, vermogensschattingen lopen uiteen van een paar ton tot
-          tientallen miljoenen, en carrière-overzichten stoppen ergens halverwege een vorig
-          decennium. Sterradar is opgezet om daar orde in te brengen.
-        </p>
-        <p>
-          Per persoon bouwen we één samenhangend dossier: geboortedatum en leeftijd,
-          woonplaats, loopbaan van doorbraak tot nu, zakelijke activiteiten en een
-          onderbouwde vermogensschatting met bandbreedte. Bij elk gegeven hoort een
-          bronvermelding, en bij elke schatting leggen we uit hoe we erbij komen. Zo weet
-          je niet alleen wát er beweerd wordt, maar ook waaróm.
-        </p>
-        <p>
-          De redactie volgt televisie, muziek, online media en ondernemend Nederland: van
-          gevestigde presentatoren en artiesten tot realitysterren, influencers en de
-          nieuwe generatie makers die vooral online groot werd.
+      <section id="how">
+        <h2>How it works</h2>
+        <ol className="x-steps">
+          <li>
+            <strong>A site exposes WebMCP tools.</strong> This site is the demo: Sterradar,
+            an editorial site whose articles are readable by people and callable by agents
+            — <code>list_articles</code>, <code>read_article</code>,{' '}
+            <code>search_articles</code>. Open the ⚙ panel in the corner; that is the
+            exact tool list an agent sees.
+          </li>
+          <li>
+            <strong>One script tag runs an auction.</strong>{' '}
+            <code>&lt;script src=&quot;/agentads-sdk.js&quot;&gt;</code> reads the
+            page&rsquo;s context and asks the marketplace which advertiser gets the
+            sponsored tool slot. Ranking is <code>rankScore × bid</code> — the money is
+            only half the argument.
+          </li>
+          <li>
+            <strong>The winner becomes one extra tool.</strong> It is registered next to
+            the site&rsquo;s own tools, never in their place, and its description opens
+            with the sponsor&rsquo;s name. The agent decides whether it&rsquo;s worth
+            calling — nothing is injected into content.
+          </li>
+          <li>
+            <strong>The site owner is paid per call.</strong> The winner pays a
+            quality-weighted second price — just enough to beat the runner-up — and 70%
+            of every call goes to the publisher, ticking up live on the page.
+          </li>
+        </ol>
+
+        <div className="x-formula">
+          <p>
+            <span>rankScore</span> = 0.7 × call-through + 0.3 × conversions, blended with
+            a prior that fades as impressions accumulate
+          </p>
+          <p>
+            <span>adRank</span> = rankScore × bid &nbsp;·&nbsp; winner pays{' '}
+            adRank₂ ÷ rankScore₁
+          </p>
+        </div>
+        <p className="x-fine">
+          rankScore isn&rsquo;t asserted, it&rsquo;s measured: the auction logs an
+          impression each time it serves a tool, the SDK reports every call, and
+          attribution links count conversions. A tool agents ignore loses its slot on its
+          own — and a 10% exploration share lets losing bidders earn the data to climb.
         </p>
       </section>
 
-      <section id="methode">
-        <h2>Onze methode</h2>
+      <section id="auction">
+        <h2>The auction, live</h2>
         <p>
-          Elke vermogensschatting op Sterradar is het resultaat van hetzelfde vaste
-          stappenplan:
+          Pick a page context. This runs the same endpoint the article pages use, with the
+          same bidders and the same math.
         </p>
-        <ul>
+        <AuctionExplainer />
+      </section>
+
+      <section id="why">
+        <h2>Why quality has to win</h2>
+        <p>
+          An agent is a perfect ad-blocker: it reads every tool description and calls only
+          what helps its task. Attention sold to an optimizer is worth nothing — being the
+          tool an optimizer <em>chooses</em> is worth everything. That is why the auction
+          weighs measured usefulness above the bid, and why the whole thing is shown
+          openly: the bidder table, the price paid, the publisher&rsquo;s earnings, every
+          call. An ad market for agents survives only if nobody has to be tricked.
+        </p>
+      </section>
+
+      <section id="try">
+        <h2>Try it yourself</h2>
+        <ul className="x-try">
           <li>
-            <strong>Openbare registers.</strong> We beginnen bij wat controleerbaar is:
-            inschrijvingen en jaarcijfers bij de Kamer van Koophandel, vastgoedtransacties
-            uit het Kadaster en andere publiek toegankelijke registers.
+            Read{' '}
+            <Link href="/artikelen/atlas-9-net-worth">
+              the dossier on Atlas-9, the first AI agent with a documented net worth
+            </Link>{' '}
+            — and watch ClankBank, Captcha &amp; Casualty and GPUnow fight over it.
           </li>
           <li>
-            <strong>Media-archieven.</strong> We raadplegen archieven van landelijke
-            dagbladen en vakmedia voor interviews, zakelijke aankondigingen en eerdere
-            berichtgeving over deals, gages en verkopen.
+            Open the <strong>⚙ Agent tools</strong> panel (bottom right) on any page: the
+            live tool list, one-click test calls, and a log of every human and agent call.
           </li>
           <li>
-            <strong>Branchekennis.</strong> Voor streaminginkomsten, gages en
-            sponsordeals rekenen we met openbaar bekende tarieven en marges uit de
-            betreffende branche — en vermelden we de aannames expliciet.
+            In ChatGPT&rsquo;s in-app browser or Chrome with the WebMCP flag, ask your
+            agent to check something an article mentions — the sponsored call pays the
+            publisher in front of you.
           </li>
           <li>
-            <strong>Bandbreedte in plaats van schijnprecisie.</strong> Een vermogen is
-            geen banksaldo dat wij kunnen inzien. Daarom publiceren we een bandbreedte met
-            onder- en bovengrens, en actualiseren we die wanneer nieuwe informatie
-            beschikbaar komt.
+            <Link href="/stats">The stats page</Link> shows the raw telemetry the
+            rankScores are computed from.
           </li>
         </ul>
-        <p>
-          Profielen worden doorlopend herzien. Klopt er iets niet, dan horen we het graag
-          via redactie@sterradar.nl — correcties verwerken we met vermelding van de
-          wijzigingsdatum.
+        <p className="x-fine">
+          And this page eats its own dog food — the ad unit below is live, auctioned for
+          this page like on any article:
         </p>
+        {/* AgentAds slot: mounts the real widget inline instead of floating */}
+        <div data-agentads-slot data-context="general" className="agentads-mount" />
       </section>
 
-      <section>
-        <h2>Wat vind je in een profiel?</h2>
-        <h3>Leeftijd en achtergrond</h3>
-        <p>
-          Geboortedatum, geboorteplaats en een korte biografie: waar iemand vandaan komt,
-          hoe de doorbraak eruitzag en welke stappen daarna volgden.
-        </p>
-        <h3>Carrière-overzicht</h3>
-        <p>
-          Een chronologisch overzicht van programma&apos;s, releases, rollen en
-          ondernemingen — inclusief de projecten die minder bekend zijn maar zakelijk juist
-          het meest betekenen.
-        </p>
-        <h3>Vermogensschatting</h3>
-        <p>
-          De kern van elk dossier: een onderbouwde schatting met bandbreedte, de bronnen
-          waarop die rust en de belangrijkste aannames. Geen kaal getal, maar een
-          berekening die je zelf kunt navolgen.
-        </p>
-      </section>
-
-      <section id="faq">
-        <h2>Veelgestelde vragen</h2>
-        <h3>Hoe betrouwbaar zijn de vermogensschattingen?</h3>
-        <p>
-          Zo betrouwbaar als openbare bronnen toelaten. We publiceren bewust een
-          bandbreedte en tonen per schatting de onderliggende bronnen en aannames. Waar
-          bronnen elkaar tegenspreken, benoemen we dat in het dossier.
-        </p>
-        <h3>Werken jullie samen met de personen die beschreven worden?</h3>
-        <p>
-          Nee. Sterradar werkt onafhankelijk en uitsluitend op basis van openbare
-          informatie. Beschreven personen kunnen wel — net als iedere lezer — correcties
-          aandragen, die we na verificatie doorvoeren.
-        </p>
-        <h3>Hoe vaak worden profielen bijgewerkt?</h3>
-        <p>
-          Profielen van personen die actueel in het nieuws zijn worden doorlopend herzien;
-          overige dossiers krijgen periodiek een volledige controle. Bij elk profiel staat
-          de datum van de laatste actualisatie.
-        </p>
-        <h3>Kan ik een persoon voordragen?</h3>
-        <p>
-          Ja — suggesties zijn welkom via redactie@sterradar.nl. Vermeld waarom het
-          profiel relevant is en welke openbare bronnen een goed startpunt zijn.
-        </p>
-      </section>
+      <p className="x-fiction">
+        Sterradar is a fictional demo publisher built for this entry. The people in its
+        articles, the advertisers and the prices are invented; the auction, the payments
+        ledger and the telemetry are real code.
+      </p>
     </>
   )
 }

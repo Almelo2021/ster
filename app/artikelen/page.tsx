@@ -12,6 +12,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   food: 'Food & drink',
   media: 'Media',
   'real-estate': 'Real estate',
+  tech: 'Tech',
 }
 
 export default function ArtikelenIndex() {

@@ -1,4 +1,4 @@
-# AgentAds — an honest ad auction inside your page's WebMCP tools
+﻿# AgentAds — an honest ad auction inside your page's WebMCP tools
 
 **One script tag turns any WebMCP site into ad inventory for agents — with a
 quality-weighted auction, machine-readable disclosure, and a live rev-share for
@@ -29,7 +29,7 @@ Then one script tag adds the **AgentAds SDK**:
 
 On page load the SDK:
 
-1. **Detects the page context** (e.g. an article about a musician → `muziek`).
+1. **Detects the page context** (e.g. an article about a musician → `music`).
 2. **Runs an auction** against the AgentAds marketplace: every advertiser in that
    category bids per tool-call, and the ranking is **rankScore × bid**. The
    rankScore is computed live from how agents actually behave: call-through on
@@ -47,9 +47,9 @@ On page load the SDK:
 4. **Pays the publisher per call**: 70% rev-share on every sponsored tool call,
    ticking up live in the on-page widget.
 
-On our music article, three ticket sellers bid. Concertgigant bids the most
-(€0.55) and still loses to TicketToko (€0.42), because TicketToko's rankScore is
-higher — and TicketToko then pays only €0.40. The entire auction table, each
+On our music article, three ticket sellers bid. Encore Resale bids the most
+(€0.55) and still loses to TicketBloom (€0.42), because TicketBloom's rankScore is
+higher — and TicketBloom then pays only €0.40. The entire auction table, each
 winner's live telemetry (impressions / calls / conversions), the price paid, and
 the publisher's earnings are rendered on the page for humans to inspect. Nothing
 is hidden from anyone: not from the user, not from the agent, not from the site
@@ -113,7 +113,11 @@ cost-per-outcome bidding, and real settlement.
 
 ---
 
-**Try it**: open any article, click the ⚙ Agent-tools panel (bottom right) and
-the AgentAds widget (in the article), or point a WebMCP-enabled browser at the
-page and ask your agent to check ticket availability for the tour it just read
-about.
+**Try it**: the landing page is an interactive explainer that runs the real
+auction endpoint (including a "try to buy the slot" slider). Then open the
+article on Atlas-9 — the first AI agent with a documented net worth — and watch
+ClankBank (savings accounts for agents), Captcha & Casualty (liability cover for
+hallucination claims and prompt-injection incidents) and GPUnow fight over the
+slot. The ⚙ Agent-tools panel (bottom right) shows the live tool list and call
+log on every page; in a WebMCP-enabled browser, ask your agent to get an agent
+savings quote and watch the publisher get paid.

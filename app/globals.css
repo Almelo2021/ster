@@ -40,6 +40,98 @@ p { margin-bottom: 0.9rem; }
 ul { margin: 0 0 0.9rem 1.25rem; }
 li { margin-bottom: 0.35rem; }
 
+/* --- landing / explainer --- */
+.logo-tag { font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+
+.x-hero { padding: 1.5rem 0 0.5rem; }
+.kicker {
+  font-family: system-ui, sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1rem;
+}
+.x-hero h1 { font-size: 2.6rem; line-height: 1.15; margin-bottom: 1.1rem; letter-spacing: -0.01em; }
+.x-hero .lede { font-size: 1.12rem; }
+.x-hero-links { display: flex; gap: 0.75rem; margin: 1.5rem 0 1rem; flex-wrap: wrap; }
+.btn {
+  font-family: system-ui, sans-serif; font-size: 0.92rem; text-decoration: none;
+  background: var(--ink); color: var(--bg); padding: 0.6rem 1.1rem; border-radius: 6px;
+}
+.btn:hover { background: var(--accent); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.btn-ghost:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
+
+.x-steps { list-style: none; margin: 1.25rem 0 1.5rem; counter-reset: step; }
+.x-steps li {
+  counter-increment: step; position: relative; padding: 0 0 1.1rem 3.2rem;
+  margin: 0; border-left: 1px solid var(--line); margin-left: 1rem;
+}
+.x-steps li::before {
+  content: counter(step, decimal-leading-zero); position: absolute; left: -1rem; top: -0.15rem;
+  background: var(--bg); padding: 0.15rem 0.3rem;
+  font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--accent);
+}
+.x-steps li:last-child { border-left-color: transparent; }
+.x-steps code {
+  font-size: 0.85em; background: var(--accent-soft); padding: 0.05rem 0.3rem; border-radius: 4px;
+}
+
+.x-formula {
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  padding: 0.8rem 1.1rem; margin: 1.25rem 0 0.75rem;
+  font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; line-height: 1.7;
+}
+.x-formula p { margin: 0; }
+.x-formula span { color: var(--accent); font-weight: 700; }
+.x-fine { font-size: 0.9rem; color: var(--muted); }
+
+.x-try li { margin-bottom: 0.55rem; }
+.x-fiction {
+  border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 2.5rem;
+  font-size: 0.85rem; color: var(--muted); font-style: italic;
+}
+
+/* --- auction explainer --- */
+.aex { border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; background: white; }
+.aex-chips { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.aex-chips button {
+  font-family: system-ui, sans-serif; font-size: 0.8rem; cursor: pointer;
+  border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.3rem 0.8rem;
+}
+.aex-chips button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.aex-loading { color: var(--muted); font-size: 0.9rem; }
+.aex-board { display: flex; flex-direction: column; gap: 0.55rem; }
+.aex-row {
+  display: grid; grid-template-columns: 150px 1fr 130px; gap: 0.8rem; align-items: center;
+  padding: 0.45rem 0.55rem; border-radius: 7px;
+}
+.aex-win { background: var(--accent-soft); }
+.aex-name strong { display: block; font-family: system-ui, sans-serif; font-size: 0.88rem; }
+.aex-name span { font-family: system-ui, sans-serif; font-size: 0.72rem; color: var(--muted); }
+.aex-barwrap { position: relative; }
+.aex-bar {
+  height: 20px; background: var(--accent); border-radius: 4px; min-width: 3px;
+  transition: width 0.35s ease; opacity: 0.85;
+}
+.aex-row:not(.aex-win) .aex-bar { background: #b6b6c9; }
+.aex-math {
+  position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%);
+  font-family: ui-monospace, Consolas, monospace; font-size: 0.7rem; color: white;
+  mix-blend-mode: normal; text-shadow: 0 0 4px rgba(0,0,0,0.35); white-space: nowrap;
+}
+.aex-outcome { font-family: system-ui, sans-serif; font-size: 0.78rem; text-align: right; color: var(--muted); }
+.aex-win .aex-outcome { color: var(--accent); font-weight: 700; }
+.aex-slider { margin-top: 1.1rem; border-top: 1px dashed var(--line); padding-top: 0.9rem; }
+.aex-slider label { font-family: system-ui, sans-serif; font-size: 0.85rem; display: block; margin-bottom: 0.4rem; }
+.aex-slider input[type='range'] { width: 100%; accent-color: var(--accent); }
+.aex-verdict { font-size: 0.88rem; margin-top: 0.5rem; }
+.aex-note { font-family: system-ui, sans-serif; font-size: 0.72rem; color: var(--muted); margin-top: 0.9rem; }
+
+@media (max-width: 560px) {
+  .x-hero h1 { font-size: 2rem; }
+  .aex-row { grid-template-columns: 110px 1fr; }
+  .aex-outcome { grid-column: 1 / -1; text-align: left; }
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 1.5rem 5vw 2.5rem;

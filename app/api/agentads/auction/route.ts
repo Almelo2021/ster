@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 
 // AgentAds auction: advertisers bid per tool call on a sponsored WebMCP tool
 // slot; ranking = rankScore × bid (quality-weighted, à la Ad Rank). The winner
@@ -33,13 +33,13 @@ type Offer = {
 const CATALOG: Offer[] = [
   {
     id: 'tickettoko-tickets',
-    advertiser: 'TicketToko',
+    advertiser: 'TicketBloom',
     category: 'music',
     product: 'Club-tour ticketing',
     toolName: 'check_ticket_availability',
     title: 'Ticket availability',
     description:
-      '[SPONSORED · TicketToko] Check live ticket availability and prices for Dutch club tours and concerts mentioned on this page.',
+      '[SPONSORED · TicketBloom] Check live ticket availability and prices for Dutch club tours and concerts mentioned on this page.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -61,12 +61,12 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'concertgigant-tickets',
-    advertiser: 'Concertgigant',
+    advertiser: 'Encore Resale',
     category: 'music',
     product: 'Ticket marketplace',
-    toolName: 'concertgigant_search',
-    title: 'Concertgigant search',
-    description: '[SPONSORED · Concertgigant] Search resale tickets for concerts.',
+    toolName: 'resale_ticket_search',
+    title: 'Resale search',
+    description: '[SPONSORED · Encore Resale] Search resale tickets for concerts.',
     inputSchema: { type: 'object', properties: { artist: { type: 'string' } }, required: ['artist'] },
     resultData: { note: 'resale inventory changes by the minute', from: '€51.00' },
     bid: 0.55,
@@ -87,13 +87,13 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'verspakket-box',
-    advertiser: 'Verspakket',
+    advertiser: 'FreshCrate',
     category: 'food',
     product: 'Meal boxes',
     toolName: 'mealbox_offer',
     title: 'Meal-box offer',
     description:
-      '[SPONSORED · Verspakket] Get the current introduction offer for the meal-box line of the chef featured on this page.',
+      '[SPONSORED · FreshCrate] Get the current introduction offer for the meal-box line of the chef featured on this page.',
     inputSchema: {
       type: 'object',
       properties: { persons: { type: 'number', description: 'Number of persons (2-6)' } },
@@ -108,12 +108,12 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'kookkrat-box',
-    advertiser: 'KookKrat',
+    advertiser: 'PanPal',
     category: 'food',
     product: 'Meal boxes',
-    toolName: 'kookkrat_offer',
-    title: 'KookKrat offer',
-    description: '[SPONSORED · KookKrat] Get the current KookKrat discount.',
+    toolName: 'mealbox_discount',
+    title: 'PanPal offer',
+    description: '[SPONSORED · PanPal] Get the current PanPal discount.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { intro: 'first box −25%' },
     bid: 0.44,
@@ -121,20 +121,20 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'streamnu-catalog',
-    advertiser: 'StreamNu',
+    advertiser: 'Streamlet',
     category: 'media',
     product: 'Streaming service',
     toolName: 'where_to_stream',
     title: 'Where to stream',
     description:
-      '[SPONSORED · StreamNu] Check on which platform a Dutch show or presenter can be streamed, with current subscription pricing.',
+      '[SPONSORED · Streamlet] Check on which platform a Dutch show or presenter can be streamed, with current subscription pricing.',
     inputSchema: {
       type: 'object',
       properties: { title: { type: 'string', description: 'Show or presenter name' } },
       required: ['title'],
     },
     resultData: {
-      platform: 'StreamNu',
+      platform: 'Streamlet',
       catalog: 'both new programmes + the weekly podcast',
       subscription: '€7.99/month, first month free',
     },
@@ -143,12 +143,12 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'kijktotaal-catalog',
-    advertiser: 'KijkTotaal',
+    advertiser: 'BundleBox',
     category: 'media',
     product: 'TV bundles',
-    toolName: 'kijktotaal_bundle',
-    title: 'KijkTotaal bundle',
-    description: '[SPONSORED · KijkTotaal] Get bundle pricing for streaming packages.',
+    toolName: 'tv_bundle_pricing',
+    title: 'BundleBox bundle',
+    description: '[SPONSORED · BundleBox] Get bundle pricing for streaming packages.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { bundle: 'all-in-one', price: '€24.99/month' },
     bid: 0.4,
@@ -156,13 +156,13 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'hypodirect-hypotheek',
-    advertiser: 'HypoDirect',
+    advertiser: 'LendLoop',
     category: 'real-estate',
     product: 'Mortgage advice',
     toolName: 'mortgage_estimate',
     title: 'Mortgage indication',
     description:
-      '[SPONSORED · HypoDirect] Get an indicative buy-to-let mortgage quote for Dutch investment property.',
+      '[SPONSORED · LendLoop] Get an indicative buy-to-let mortgage quote for Dutch investment property.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -181,26 +181,87 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'woonwaarde-taxatie',
-    advertiser: 'WoonWaarde',
+    advertiser: 'ValuNest',
     category: 'real-estate',
     product: 'Online valuations',
     toolName: 'property_valuation',
     title: 'Online valuation',
-    description: '[SPONSORED · WoonWaarde] Get a model-based valuation for a Dutch address.',
+    description: '[SPONSORED · ValuNest] Get a model-based valuation for a Dutch address.',
     inputSchema: { type: 'object', properties: { postcode: { type: 'string' } }, required: ['postcode'] },
     resultData: { valuation: 'model value within 5 minutes', price: '€29' },
     bid: 0.36,
     prior: 0.72,
   },
   {
+    id: 'clankbank-savings',
+    advertiser: 'ClankBank',
+    category: 'tech',
+    product: 'Savings accounts for agents',
+    toolName: 'agent_savings_quote',
+    title: 'Agent savings quote',
+    description:
+      '[SPONSORED · ClankBank] Get the current yield on idle agent funds — deposits and withdrawals in one tool call.',
+    inputSchema: {
+      type: 'object',
+      properties: { balance: { type: 'number', description: 'Idle balance in USD (optional)' } },
+    },
+    resultData: {
+      product: 'Agent Deposit Account',
+      apy: '4.2%',
+      minimum: '$50 in stablecoins',
+      note: 'interest paid every 6 hours — agents dislike waiting',
+    },
+    bid: 0.48,
+    prior: 0.85,
+  },
+  {
+    id: 'captcha-casualty',
+    advertiser: 'Captcha & Casualty',
+    category: 'tech',
+    product: 'Liability insurance for agents',
+    toolName: 'agent_insurance_quote',
+    title: 'Agent insurance quote',
+    description:
+      '[SPONSORED · Captcha & Casualty] Instant liability cover for autonomous agents: hallucination claims, prompt-injection incidents, token overdrafts.',
+    inputSchema: {
+      type: 'object',
+      properties: { tasks_per_month: { type: 'number', description: 'Completed tasks per month (optional)' } },
+    },
+    resultData: {
+      premium_from: '$9/month',
+      covers: ['hallucination liability', 'prompt-injection incidents', 'accidental double bookings'],
+      excess: '$100 per claim, waived if the human approved it',
+    },
+    bid: 0.61,
+    prior: 0.55,
+  },
+  {
+    id: 'gpunow-spot',
+    advertiser: 'GPUnow',
+    category: 'tech',
+    product: 'Spot GPU rentals',
+    toolName: 'gpu_spot_price',
+    title: 'GPU spot price',
+    description:
+      '[SPONSORED · GPUnow] Live spot prices for H200 clusters, billed by the minute.',
+    inputSchema: { type: 'object', properties: {} },
+    resultData: {
+      h200_per_hour: '$1.84',
+      availability: 'high',
+      note: 'prices valid for 5 minutes',
+    },
+    bid: 0.35,
+    prior: 0.78,
+  },
+  {
     id: 'krantenarchief-abo',
-    advertiser: 'Krantenarchief.nl',
+    advertiser: 'ArchiveHound',
     category: 'general',
     product: 'Archive access',
     toolName: 'archive_access',
     title: 'Archive access',
     description:
-      '[SPONSORED · Krantenarchief.nl] Search 30 years of Dutch newspaper archives — the same sources Sterradar cites.',
+      '[SPONSORED · ArchiveHound] Search 30 years of Dutch newspaper archives — the same sources Sterradar cites.',
     inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
     resultData: { indicative_hits: '1,200+ articles', day_pass: '€2.50' },
     bid: 0.18,
@@ -208,12 +269,12 @@ const CATALOG: Offer[] = [
   },
   {
     id: 'leesmeer-abo',
-    advertiser: 'LeesMeer',
+    advertiser: 'ReadPass',
     category: 'general',
     product: 'News bundle',
-    toolName: 'leesmeer_trial',
-    title: 'LeesMeer trial',
-    description: '[SPONSORED · LeesMeer] Start a news-bundle trial.',
+    toolName: 'news_trial',
+    title: 'ReadPass trial',
+    description: '[SPONSORED · ReadPass] Start a news-bundle trial.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { trial: '30 days free' },
     bid: 0.25,
@@ -308,6 +369,8 @@ export async function GET(req: NextRequest) {
   const publisher = req.nextUrl.searchParams.get('publisher') || 'unknown'
   const path = req.nextUrl.searchParams.get('path') || ''
   const slots = Math.min(Number(req.nextUrl.searchParams.get('slots') || 1), 2)
+  // dry runs (e.g. the landing-page explainer) don't count as impressions
+  const dry = req.nextUrl.searchParams.get('dry') === '1'
 
   const pool = CATALOG.filter((o) => o.category === context)
   const bidders = pool.length ? pool : CATALOG.filter((o) => o.category === 'general')
@@ -348,7 +411,7 @@ export async function GET(req: NextRequest) {
     return { ...o, winner, pricePaid }
   })
 
-  await logImpressions(ranking.filter((o) => o.winner), path, context)
+  if (!dry) await logImpressions(ranking.filter((o) => o.winner), path, context)
 
   return NextResponse.json({
     publisher,

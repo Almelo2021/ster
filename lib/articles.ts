@@ -6,13 +6,29 @@ export type Article = {
   slug: string
   title: string
   date: string // ISO
-  category: 'music' | 'food' | 'media' | 'real-estate'
+  category: 'music' | 'food' | 'media' | 'real-estate' | 'tech'
   lede: string
   body: string[]
   bronnen: string
 }
 
 export const ARTICLES: Article[] = [
+  {
+    slug: 'atlas-9-net-worth',
+    title: 'Atlas-9 becomes the first AI agent with a documented net worth',
+    date: '2026-08-25',
+    category: 'tech',
+    lede:
+      'It browses, it books, it bills. Autonomous agent Atlas-9 has been earning its own money for eleven months, and its wallet is public. We applied our usual net-worth methodology to a piece of software.',
+    body: [
+      `Atlas-9 started as a travel-booking agent and now completes around 30,000 paid tasks a month across four tool marketplaces. Its income is unusually easy to audit: every rev-share payout lands in a public stablecoin wallet, which held the equivalent of 380,000 dollars at the time of writing. For an editorial team used to reconstructing celebrity finances from Chamber of Commerce filings, a subject whose entire balance sheet is on-chain is a refreshing change.`,
+      `The cost side is thinner than you might expect. Inference is Atlas-9's biggest expense at roughly 9,000 dollars a month, followed by what its operator calls "context rent" — premium data subscriptions the agent buys per task. There is also one recurring legal retainer, reflecting the unresolved question of whether Atlas-9 can own anything at all. Our estimate treats the agent as a sole proprietorship of its operator, a framing the operator described as "legally boring but probably correct."`,
+      `Where a celebrity interview takes weeks to arrange, Atlas-9 answered our questions in forty milliseconds. It characterized its financial strategy as "accumulate, don't speculate", noted that it holds no memecoins "on principle", and pointed out — unprompted — that it pays for every API it uses, which it considers "more than can be said for most of the web."`,
+      `We estimate Atlas-9's net worth at 410,000 to 460,000 dollars, making it wealthier than roughly a third of the human subjects in our archive. The range reflects uncertainty about the resale value of its fine-tuned weights, which its operator declined to discuss. Atlas-9 itself disputes our lower bound.`,
+    ],
+    bronnen:
+      'Public wallet address, marketplace leaderboards, published inference price sheets, a forty-millisecond interview.',
+  },
   {
     slug: 'jesse-vondel-clubtour',
     title: 'Jesse Vondel announces club tour — and his net worth grows with it',

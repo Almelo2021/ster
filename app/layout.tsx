@@ -4,36 +4,37 @@ import Script from 'next/script'
 import AgentToolsPanel from '../components/AgentToolsPanel'
 
 export const metadata = {
-  title: 'Sterradar — leeftijd, carrière en vermogen van bekende Nederlanders',
+  title: 'AgentAds — an ad auction inside a page’s WebMCP tools',
   description:
-    'Sterradar documenteert leeftijd, carrière en geschat vermogen van bekende Nederlanders op basis van openbare bronnen.',
+    'One script tag turns a WebMCP site into ad inventory for agents: a quality-weighted auction, disclosed sponsored tools, and a live rev-share for the site owner. Demonstrated on Sterradar.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl">
+    <html lang="en">
       <body>
         <header className="site-header">
           <Link href="/" className="logo">
-            ✦ Sterradar
+            ✦ Sterradar <span className="logo-tag">× AgentAds</span>
           </Link>
           <nav>
-            <Link href="/artikelen">Artikelen</Link>
-            <Link href="/#methode">Methode</Link>
-            <Link href="/#faq">Veelgestelde vragen</Link>
+            <Link href="/artikelen">Articles</Link>
+            <Link href="/#how">How it works</Link>
+            <Link href="/#auction">Live auction</Link>
+            <Link href="/stats">Stats</Link>
           </nav>
         </header>
         <main>{children}</main>
         <footer className="site-footer">
           <p>
-            Sterradar is een onafhankelijk redactioneel onderzoeksproject. Schattingen zijn
-            indicatief en gebaseerd op openbare bronnen; aan de inhoud kunnen geen rechten
-            worden ontleend. Vragen of correcties: redactie@sterradar.nl
+            Sterradar is a fictional demo publisher for the AgentAds WebMCP Challenge
+            entry. Articles, advertisers and prices are invented; no rights can be derived
+            from the content.
           </p>
-          <p>© {new Date().getFullYear()} Sterradar</p>
+          <p>© {new Date().getFullYear()} Sterradar · AgentAds</p>
         </footer>
         <AgentToolsPanel />
-        {/* AgentAds: één scripttag monetiseert het WebMCP-oppervlak van de site */}
+        {/* AgentAds: one script tag monetizes the site's WebMCP surface */}
         <Script src="/agentads-sdk.js" data-publisher="sterradar" strategy="afterInteractive" />
       </body>
     </html>
