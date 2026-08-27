@@ -3,7 +3,7 @@
  *
  * One script tag turns a page with WebMCP tools into an advertising surface
  * for agents. The SDK asks the AgentAds marketplace for an auction for this
- * page's context (ranking = evalScore × bid; the winner pays a
+ * page's context (ranking = rankScore × bid; the winner pays a
  * quality-weighted second price), registers the winning tool(s) as clearly
  * marked SPONSORED WebMCP tools, and pays the site owner per tool call
  * (rev share).
@@ -147,7 +147,7 @@
       .map(function (o) {
         return (
           '<tr class="' + (o.winner ? 'win' : '') + '"><td>' + esc(o.advertiser) +
-          (o.winner ? ' ✓' : '') + '</td><td>' + o.evalScore.toFixed(2) +
+          (o.winner ? ' ✓' : '') + (o.exploration ? ' ⚡' : '') + '</td><td>' + o.rankScore.toFixed(2) +
           '</td><td>' + euro(o.bid) + '</td><td>' + o.adRank.toFixed(3) + '</td></tr>'
         )
       })
@@ -162,12 +162,13 @@
       '<div class="earn"><span>Site-owner earnings<br><small>' +
       Math.round(auction.revShare * 100) + '% rev share · per call</small></span>' +
       '<strong id="agentads-earned">' + euro(earned) + '</strong></div>' +
-      '<table><tr><th>Bidder (' + esc(auction.context) + ')</th><th>eval</th><th>bid</th><th>rank</th></tr>' +
+      '<table><tr><th>Bidder (' + esc(auction.context) + ')</th><th>rankscore</th><th>bid</th><th>rank</th></tr>' +
       rows + '</table>' +
       '<div id="agentads-tools"></div>' +
       '<div class="log" id="agentads-log"></div>' +
-      '<div class="muted">Auction: evalScore × bid; the winner pays a quality-weighted second price. ' +
-      'Sponsored tools are additive and marked as such; agents can ignore them.</div>'
+      '<div class="muted">Auction: rankScore × bid; the winner pays a quality-weighted second price. ' +
+      'rankScore is earned live from agent behaviour: call-through on served slots and conversions on calls. ' +
+      'Sponsored tools are additive; agents can ignore them.</div>'
     box.appendChild(body)
     ;(mount || document.body).appendChild(box)
 
@@ -264,6 +265,14 @@
             tools[i].execute({ demo: true })
           })
           toolsEl.appendChild(row)
+        })
+        winners.forEach(function (o) {
+          var s = o.stats || { impressions: 0, calls: 0, conversions: 0 }
+          widget.log(
+            'rankScore ' + o.rankScore.toFixed(2) + (auction.live ? ' (live)' : ' (prior)') +
+            ' · ' + s.impressions + ' imp / ' + s.calls + ' calls / ' + s.conversions + ' conv' +
+            (o.exploration ? ' · exploration serve' : ''),
+          )
         })
         widget.log('auction complete · ' + auction.ranking.length + ' bidders · context: ' + auction.context)
       })

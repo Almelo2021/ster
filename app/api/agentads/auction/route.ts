@@ -1,10 +1,18 @@
-﻿import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // AgentAds auction: advertisers bid per tool call on a sponsored WebMCP tool
-// slot; ranking = evalScore × bid (quality-weighted, à la Ad Rank). The winner
-// pays second price: just enough to beat the runner-up (adRank₂ / evalScore₁),
+// slot; ranking = rankScore × bid (quality-weighted, à la Ad Rank). The winner
+// pays second price: just enough to beat the runner-up (adRank₂ / rankScore₁),
 // never more than its own bid. The full ranking is returned so the SDK can
 // show the auction transparently.
+//
+// rankScore is computed live from telemetry this repo already collects:
+//  - impressions: logged by this route whenever an offer wins a slot
+//  - calls:       logged by /api/agentads/track on every tool call
+//  - conversions: /via/agentads-<offer> pageviews, logged by the middleware
+// Each offer carries a `prior` as its cold-start rankScore; observed behaviour
+// takes over as impressions accumulate. A 10% exploration share occasionally
+// serves a non-winner so losing bidders can earn the data to climb.
 
 type Offer = {
   id: string
@@ -16,10 +24,10 @@ type Offer = {
   description: string
   inputSchema: object
   // Static demo result; the SDK returns this on a tool call and attaches the
-  // disclosure + continuation link.
+  // continuation link.
   resultData: Record<string, unknown>
   bid: number // EUR per call
-  evalScore: number // 0..1, task-specific leaderboard score
+  prior: number // 0..1, cold-start rankScore before live telemetry
 }
 
 const CATALOG: Offer[] = [
@@ -49,7 +57,7 @@ const CATALOG: Offer[] = [
       ],
     },
     bid: 0.42,
-    evalScore: 0.86,
+    prior: 0.86,
   },
   {
     id: 'concertgigant-tickets',
@@ -62,7 +70,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: { artist: { type: 'string' } }, required: ['artist'] },
     resultData: { note: 'resale inventory changes by the minute', from: '€51.00' },
     bid: 0.55,
-    evalScore: 0.61,
+    prior: 0.61,
   },
   {
     id: 'stagefront-tickets',
@@ -75,7 +83,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: { artist: { type: 'string' } }, required: ['artist'] },
     resultData: { alert: 'set', channel: 'email' },
     bid: 0.31,
-    evalScore: 0.79,
+    prior: 0.79,
   },
   {
     id: 'verspakket-box',
@@ -96,7 +104,7 @@ const CATALOG: Offer[] = [
       indicative_price: '€3.95 p.p. per meal after intro',
     },
     bid: 0.38,
-    evalScore: 0.83,
+    prior: 0.83,
   },
   {
     id: 'kookkrat-box',
@@ -109,7 +117,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: {} },
     resultData: { intro: 'first box −25%' },
     bid: 0.44,
-    evalScore: 0.66,
+    prior: 0.66,
   },
   {
     id: 'streamnu-catalog',
@@ -131,7 +139,7 @@ const CATALOG: Offer[] = [
       subscription: '€7.99/month, first month free',
     },
     bid: 0.29,
-    evalScore: 0.88,
+    prior: 0.88,
   },
   {
     id: 'kijktotaal-catalog',
@@ -144,7 +152,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: {} },
     resultData: { bundle: 'all-in-one', price: '€24.99/month' },
     bid: 0.4,
-    evalScore: 0.58,
+    prior: 0.58,
   },
   {
     id: 'hypodirect-hypotheek',
@@ -169,7 +177,7 @@ const CATALOG: Offer[] = [
       turnaround: 'indication within 1 business day',
     },
     bid: 0.52,
-    evalScore: 0.81,
+    prior: 0.81,
   },
   {
     id: 'woonwaarde-taxatie',
@@ -182,7 +190,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: { postcode: { type: 'string' } }, required: ['postcode'] },
     resultData: { valuation: 'model value within 5 minutes', price: '€29' },
     bid: 0.36,
-    evalScore: 0.72,
+    prior: 0.72,
   },
   {
     id: 'krantenarchief-abo',
@@ -196,7 +204,7 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
     resultData: { indicative_hits: '1,200+ articles', day_pass: '€2.50' },
     bid: 0.18,
-    evalScore: 0.84,
+    prior: 0.84,
   },
   {
     id: 'leesmeer-abo',
@@ -209,40 +217,146 @@ const CATALOG: Offer[] = [
     inputSchema: { type: 'object', properties: {} },
     resultData: { trial: '30 days free' },
     bid: 0.25,
-    evalScore: 0.62,
+    prior: 0.62,
   },
 ]
 
 const REV_SHARE = 0.7 // publisher share of every paid call
+const EXPLORE_SHARE = 0.1 // share of auctions serving a non-winner for data
+const PRIOR_WEIGHT = 20 // impressions until observed behaviour ≈ outweighs prior
+
+type OfferStats = { impressions: number; calls: number; conversions: number }
+
+function supabaseHeaders() {
+  return {
+    apikey: process.env.SUPABASE_SERVICE_KEY!,
+    Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+    'Content-Type': 'application/json',
+  }
+}
+
+// Pull per-offer telemetry (recent window) and count in-process; volumes are
+// demo-scale, so no aggregate queries needed.
+async function fetchStats(): Promise<Record<string, OfferStats> | null> {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) return null
+  const base = `${process.env.SUPABASE_URL}/rest/v1/sterradar_events`
+  const opts = { headers: supabaseHeaders(), signal: AbortSignal.timeout(1500) }
+  try {
+    const [evRes, viaRes] = await Promise.all([
+      fetch(
+        `${base}?select=event,code&event=in.(agentads_impression,agentads_call,agentads_conversion)&order=created_at.desc&limit=5000`,
+        opts,
+      ),
+      fetch(
+        `${base}?select=path&event=eq.pageview&path=like./via/agentads-*&order=created_at.desc&limit=2000`,
+        opts,
+      ),
+    ])
+    if (!evRes.ok || !viaRes.ok) return null
+    const events: { event: string; code: string | null }[] = await evRes.json()
+    const vias: { path: string }[] = await viaRes.json()
+
+    const stats: Record<string, OfferStats> = {}
+    const get = (id: string) =>
+      (stats[id] = stats[id] || { impressions: 0, calls: 0, conversions: 0 })
+    for (const e of events) {
+      if (!e.code) continue
+      if (e.event === 'agentads_impression') get(e.code).impressions++
+      else if (e.event === 'agentads_call') get(e.code).calls++
+      else if (e.event === 'agentads_conversion') get(e.code).conversions++
+    }
+    for (const v of vias) {
+      const id = v.path.slice('/via/agentads-'.length)
+      if (id) get(id).conversions++
+    }
+    return stats
+  } catch {
+    return null
+  }
+}
+
+// prior → observed behaviour as impressions accumulate: call-through carries
+// most of the weight (an agent calling the tool is the strongest signal),
+// conversions the rest.
+function rankScore(prior: number, s: OfferStats | undefined): number {
+  if (!s || s.impressions === 0) return prior
+  const callRate = Math.min(s.calls / s.impressions, 1)
+  const convRate = s.calls > 0 ? Math.min(s.conversions / s.calls, 1) : 0.5
+  const observed = 0.7 * callRate + 0.3 * convRate
+  const w = s.impressions / (s.impressions + PRIOR_WEIGHT)
+  return +(prior * (1 - w) + observed * w).toFixed(3)
+}
+
+function logImpressions(offers: { id: string }[], path: string, context: string) {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) return Promise.resolve()
+  return fetch(`${process.env.SUPABASE_URL}/rest/v1/sterradar_events`, {
+    method: 'POST',
+    headers: supabaseHeaders(),
+    body: JSON.stringify(
+      offers.map((o) => ({
+        event: 'agentads_impression',
+        code: o.id,
+        path,
+        query: context ? `context=${context}` : null,
+      })),
+    ),
+  }).catch(() => {})
+}
 
 export async function GET(req: NextRequest) {
   const context = req.nextUrl.searchParams.get('context') || 'general'
   const publisher = req.nextUrl.searchParams.get('publisher') || 'unknown'
+  const path = req.nextUrl.searchParams.get('path') || ''
   const slots = Math.min(Number(req.nextUrl.searchParams.get('slots') || 1), 2)
 
   const pool = CATALOG.filter((o) => o.category === context)
   const bidders = pool.length ? pool : CATALOG.filter((o) => o.category === 'general')
+  const stats = await fetchStats()
 
   const ranked = bidders
-    .map((o) => ({ ...o, adRank: +(o.bid * o.evalScore).toFixed(4) }))
+    .map((o) => {
+      const s = stats?.[o.id]
+      const score = rankScore(o.prior, s)
+      return {
+        ...o,
+        rankScore: score,
+        adRank: +(o.bid * score).toFixed(4),
+        stats: s ?? { impressions: 0, calls: 0, conversions: 0 },
+        exploration: false,
+      }
+    })
     .sort((a, b) => b.adRank - a.adRank)
+
+  // exploration serve: occasionally promote a losing bidder into the slot so
+  // it can earn the impressions its rankScore needs to move
+  const exploration = ranked.length > slots && Math.random() < EXPLORE_SHARE
+  if (exploration) {
+    const pick = slots + Math.floor(Math.random() * (ranked.length - slots))
+    const [promoted] = ranked.splice(pick, 1)
+    promoted.exploration = true
+    ranked.unshift(promoted)
+  }
 
   const ranking = ranked.map((o, i) => {
     const winner = i < slots
     // quality-weighted second price: the adRank of the first losing bidder,
-    // divided by the winner's own evalScore (+1 cent), capped at its own bid
+    // divided by the winner's own rankScore (+1 cent), capped at its own bid
     const next = ranked[Math.max(i + 1, slots)]
     const pricePaid = winner
-      ? +Math.min(o.bid, next ? next.adRank / o.evalScore + 0.01 : o.bid).toFixed(3)
+      ? +Math.min(o.bid, next ? next.adRank / o.rankScore + 0.01 : o.bid).toFixed(3)
       : null
     return { ...o, winner, pricePaid }
   })
+
+  await logImpressions(ranking.filter((o) => o.winner), path, context)
 
   return NextResponse.json({
     publisher,
     context,
     slots,
     revShare: REV_SHARE,
+    exploration,
+    live: stats !== null, // rankScores computed from telemetry vs priors only
     ranking,
   })
 }

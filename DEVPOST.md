@@ -31,10 +31,14 @@ On page load the SDK:
 
 1. **Detects the page context** (e.g. an article about a musician → `muziek`).
 2. **Runs an auction** against the AgentAds marketplace: every advertiser in that
-   category bids per tool-call, and the ranking is **evalScore × bid** — a
-   quality score earned from real performance, times the money. The winner pays a
-   quality-weighted **second price** (just enough to beat the runner-up), so
-   overbidding with a bad tool can't buy the slot.
+   category bids per tool-call, and the ranking is **rankScore × bid**. The
+   rankScore is computed live from how agents actually behave: call-through on
+   served slots (did the agent choose to call the tool?) and conversions on
+   calls, blended with a cold-start prior that fades as impressions accumulate.
+   The winner pays a quality-weighted **second price** (just enough to beat the
+   runner-up), so overbidding with a bad tool can't buy the slot — and a tool
+   agents ignore loses the slot on its own. A 10% exploration share
+   occasionally serves a losing bidder so it can earn the data to climb.
 3. **Registers the winning tool as a *disclosed* sponsored WebMCP tool** — the
    tool description opens with `[SPONSORED · advertiser]`: disclosed once,
    clearly, without cluttering the tool name or results. Sponsored tools are
@@ -44,11 +48,12 @@ On page load the SDK:
    ticking up live in the on-page widget.
 
 On our music article, three ticket sellers bid. Concertgigant bids the most
-(€0.55) and still loses to TicketToko (€0.42), because TicketToko's evalScore is
-higher — and TicketToko then pays only €0.40. The entire auction table, the
-price paid, and the publisher's earnings are rendered on the page for humans to
-inspect. Nothing is hidden from anyone: not from the user, not from the agent,
-not from the site owner.
+(€0.55) and still loses to TicketToko (€0.42), because TicketToko's rankScore is
+higher — and TicketToko then pays only €0.40. The entire auction table, each
+winner's live telemetry (impressions / calls / conversions), the price paid, and
+the publisher's earnings are rendered on the page for humans to inspect. Nothing
+is hidden from anyone: not from the user, not from the agent, not from the site
+owner.
 
 ## Why humans + agents together makes it better
 
@@ -74,15 +79,19 @@ not from the site owner.
   reports calls/conversions via `sendBeacon`.
 - **Marketplace** (`/api/agentads/auction`): serverless route implementing the
   quality-weighted generalized second-price auction over a per-category
-  advertiser catalog; returns the full ranking so the client can show its work.
+  advertiser catalog, with rankScores computed per request from live telemetry
+  (impressions the route logs itself, calls from the track endpoint, conversions
+  from `/via/…` attribution pageviews) and an exploration share — a small
+  multi-armed bandit. Returns the full ranking so the client can show its work.
 - **Measurement** (`/api/agentads/track`): every sponsored call and conversion is
   logged server-side (Supabase), alongside the site's existing AI-traffic
-  analytics.
+  analytics — the same event stream the rankScores are computed from.
 
 ## What's real and what's simulated
 
-The auction, pricing math, tool registration, disclosure, call tracking, and
-rev-share accounting are fully implemented. The advertisers and their inventory
+The auction, pricing math, live rankScore computation, exploration serves, tool
+registration, disclosure, call tracking, and rev-share accounting are fully
+implemented. The advertisers and their inventory
 data are fictional (as are the article subjects — it's a demo site), and the
 wallet is a ledger rather than a payment rail. Swapping the catalog for real
 bidders and the ledger for x402-style settlement is deliberately the boring part.
