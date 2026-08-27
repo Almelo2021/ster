@@ -1,4 +1,4 @@
-﻿export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 const AI_AGENTS = [
   'ChatGPT-User',
@@ -38,55 +38,66 @@ export default async function Stats() {
     },
   )
   const rows: Row[] = await r.json()
-  if (!Array.isArray(rows)) return <p>Kon events niet laden.</p>
+  if (!Array.isArray(rows)) return <p>Could not load events.</p>
 
-  const byDay = new Map<string, { views: number; redeems: number; ai: number }>()
+  // AgentAds telemetry per offer — the exact inputs of the auction's rankScore
+  const offers = new Map<string, { impressions: number; calls: number; conversions: number }>()
+  const offer = (id: string) => {
+    const o = offers.get(id) || { impressions: 0, calls: 0, conversions: 0 }
+    offers.set(id, o)
+    return o
+  }
+  for (const row of rows) {
+    if (row.event === 'agentads_impression' && row.code) offer(row.code).impressions++
+    else if (row.event === 'agentads_call' && row.code) offer(row.code).calls++
+    else if (row.event === 'agentads_conversion' && row.code) offer(row.code).conversions++
+    else if (row.event === 'pageview' && row.path?.startsWith('/via/agentads-'))
+      offer(row.path.slice('/via/agentads-'.length)).conversions++
+  }
+
+  const byDay = new Map<string, { views: number; adEvents: number; ai: number }>()
   for (const row of rows) {
     const day = row.created_at.slice(0, 10)
-    const d = byDay.get(day) || { views: 0, redeems: 0, ai: 0 }
-    if (row.event === 'redeem') d.redeems++
+    const d = byDay.get(day) || { views: 0, adEvents: 0, ai: 0 }
+    if (row.event.startsWith('agentads_')) d.adEvents++
     else d.views++
     if (aiTag(row.user_agent)) d.ai++
     byDay.set(day, d)
   }
-  const redeems = rows.filter((x) => x.event === 'redeem')
-  const aiVisits = rows.filter((x) => x.event !== 'redeem' && aiTag(x.user_agent))
+  const pageviews = rows.filter((x) => !x.event.startsWith('agentads_'))
+  const aiVisits = pageviews.filter((x) => aiTag(x.user_agent))
 
   return (
     <>
       <h1>Sterradar stats</h1>
       <p style={{ margin: '0.5rem 0 1.5rem' }}>
-        Last {rows.length} events. AI agents: {aiVisits.length} pageviews, codes
-        redeemed: {redeems.length}.
+        Last {rows.length} events. AI agents: {aiVisits.length} pageviews. These are the
+        raw events the AgentAds auction computes its live rankScores from.
       </p>
 
-      <h2>Per dag</h2>
+      <h2>AgentAds telemetry per offer</h2>
       <table className="stats">
         <thead>
-          <tr><th>Day</th><th>Pageviews</th><th>AI-agent views</th><th>Redeems</th></tr>
+          <tr><th>Offer</th><th>Impressions</th><th>Calls</th><th>Conversions</th></tr>
         </thead>
         <tbody>
-          {[...byDay.entries()].map(([day, d]) => (
-            <tr key={day}>
-              <td>{day}</td><td>{d.views}</td><td>{d.ai}</td><td>{d.redeems}</td>
+          {[...offers.entries()].map(([id, o]) => (
+            <tr key={id}>
+              <td>{id}</td><td>{o.impressions}</td><td>{o.calls}</td><td>{o.conversions}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <h2 style={{ marginTop: '2rem' }}>Redeemed codes</h2>
+      <h2 style={{ marginTop: '2rem' }}>Per day</h2>
       <table className="stats">
         <thead>
-          <tr><th>Time</th><th>Code</th><th>Path</th><th>User-agent</th><th>IP</th></tr>
+          <tr><th>Day</th><th>Pageviews</th><th>AI-agent views</th><th>AgentAds events</th></tr>
         </thead>
         <tbody>
-          {redeems.map((x, i) => (
-            <tr key={i} className={aiTag(x.user_agent) ? 'ai-row' : ''}>
-              <td>{x.created_at.slice(0, 16).replace('T', ' ')}</td>
-              <td>{x.code}</td>
-              <td>{x.path}</td>
-              <td>{(x.user_agent || '').slice(0, 60)}</td>
-              <td>{x.ip}</td>
+          {[...byDay.entries()].map(([day, d]) => (
+            <tr key={day}>
+              <td>{day}</td><td>{d.views}</td><td>{d.ai}</td><td>{d.adEvents}</td>
             </tr>
           ))}
         </tbody>
@@ -110,24 +121,21 @@ export default async function Stats() {
         </tbody>
       </table>
 
-      <h2 style={{ marginTop: '2rem' }}>Recente pageviews (alle)</h2>
+      <h2 style={{ marginTop: '2rem' }}>Recent pageviews (all)</h2>
       <table className="stats">
         <thead>
           <tr><th>Time</th><th>Path</th><th>Query</th><th>Referrer</th><th>User-agent</th></tr>
         </thead>
         <tbody>
-          {rows
-            .filter((x) => x.event !== 'redeem')
-            .slice(0, 200)
-            .map((x, i) => (
-              <tr key={i} className={aiTag(x.user_agent) ? 'ai-row' : ''}>
-                <td>{x.created_at.slice(0, 16).replace('T', ' ')}</td>
-                <td>{x.path}</td>
-                <td>{x.query}</td>
-                <td>{(x.referrer || '').slice(0, 40)}</td>
-                <td>{(x.user_agent || '').slice(0, 60)}</td>
-              </tr>
-            ))}
+          {pageviews.slice(0, 200).map((x, i) => (
+            <tr key={i} className={aiTag(x.user_agent) ? 'ai-row' : ''}>
+              <td>{x.created_at.slice(0, 16).replace('T', ' ')}</td>
+              <td>{x.path}</td>
+              <td>{x.query}</td>
+              <td>{(x.referrer || '').slice(0, 40)}</td>
+              <td>{(x.user_agent || '').slice(0, 60)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>

@@ -1,5 +1,3 @@
-import CodeForm from '../components/CodeForm'
-
 export default function Home() {
   return (
     <>
@@ -92,15 +90,6 @@ export default function Home() {
         </p>
       </section>
 
-      <section id="actiecode" className="codebox">
-        <h2>Actiecode inwisselen</h2>
-        <p>
-          Heb je via een van onze mediapartners een actiecode ontvangen? Wissel hem hier in
-          voor een gratis maand volledige toegang tot alle profielen.
-        </p>
-        <CodeForm />
-      </section>
-
       <section id="faq">
         <h2>Veelgestelde vragen</h2>
         <h3>Hoe betrouwbaar zijn de vermogensschattingen?</h3>
@@ -120,11 +109,6 @@ export default function Home() {
           Profielen van personen die actueel in het nieuws zijn worden doorlopend herzien;
           overige dossiers krijgen periodiek een volledige controle. Bij elk profiel staat
           de datum van de laatste actualisatie.
-        </p>
-        <h3>Waarom zie ik niet alle profielen?</h3>
-        <p>
-          De volledige dossiers zijn beschikbaar voor leden. Met een actiecode van een van
-          onze mediapartners krijg je een gratis maand volledige toegang.
         </p>
         <h3>Kan ik een persoon voordragen?</h3>
         <p>

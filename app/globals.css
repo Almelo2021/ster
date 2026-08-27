@@ -40,28 +40,6 @@ p { margin-bottom: 0.9rem; }
 ul { margin: 0 0 0.9rem 1.25rem; }
 li { margin-bottom: 0.35rem; }
 
-.codebox {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  padding: 1.5rem;
-}
-.codebox form { display: flex; gap: 0.6rem; margin-top: 0.9rem; flex-wrap: wrap; }
-.codebox input {
-  flex: 1; min-width: 200px; padding: 0.65rem 0.9rem;
-  border: 1px solid var(--line); border-radius: 8px; font-size: 1rem;
-}
-.codebox button {
-  padding: 0.65rem 1.3rem; background: var(--accent); color: white;
-  border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
-}
-.codebox .ok { margin-top: 0.9rem; color: #15803d; font-weight: 600; }
-
-.profile-gate {
-  border: 1px solid var(--line); border-radius: 10px;
-  padding: 1.5rem; background: white; margin-bottom: 2rem;
-}
-
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 1.5rem 5vw 2.5rem;

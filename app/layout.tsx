@@ -21,7 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/artikelen">Artikelen</Link>
             <Link href="/#methode">Methode</Link>
             <Link href="/#faq">Veelgestelde vragen</Link>
-            <Link href="/#actiecode">Actiecode</Link>
           </nav>
         </header>
         <main>{children}</main>
