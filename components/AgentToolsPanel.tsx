@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { ARTICLES, getArticle, searchArticles } from '../lib/articles'
 import {
-  getModelContext,
+  onRuntime,
   registerTools,
   emitToolCall,
   textResult,
@@ -97,7 +97,9 @@ export default function AgentToolsPanel() {
   useEffect(() => {
     const siteTools = buildSiteTools()
     setTools(siteTools)
-    setActive(registerTools(siteTools) && !!getModelContext())
+    setActive(registerTools(siteTools))
+    // runtimes die pas ná paginalading injecteren (extensies, agent-browsers)
+    onRuntime((a) => setActive(a))
 
     const onCall = (e: Event) => {
       const detail = (e as CustomEvent<ToolCallDetail>).detail
@@ -120,7 +122,7 @@ export default function AgentToolsPanel() {
           <div className="agent-panel-status">
             {active
               ? '● WebMCP actief — deze pagina biedt tools aan jouw agent'
-              : '○ Geen WebMCP-runtime gedetecteerd (Chrome-flag of ChatGPT-browser vereist) — tools werken hieronder ook met de hand'}
+              : '○ Wacht op WebMCP-runtime… WebMCP is experimenteel: het werkt in de in-app browser van ChatGPT en in Chrome met de WebMCP-flag of origin-trial. Verschijnt de runtime alsnog, dan melden de tools zich automatisch aan. Hieronder kun je ze intussen met de hand proberen.'}
           </div>
           <ul className="agent-panel-tools">
             {tools.map((t) => (

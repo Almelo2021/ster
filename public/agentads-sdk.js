@@ -39,9 +39,7 @@
   // Zelfde registerconventie als de site (lib/webmcp.ts): gedeeld register op
   // window, zodat provideContext-implementaties altijd de unie van alle tools
   // krijgen en niemand elkaars registraties overschrijft.
-  function registerTools(tools) {
-    var registry = (window.__webmcpTools = window.__webmcpTools || [])
-    registry.push.apply(registry, tools)
+  function tryRegister(tools) {
     var mc = getModelContext()
     if (!mc) return false
     try {
@@ -50,7 +48,7 @@
           Promise.resolve(mc.registerTool(t)).catch(function () {})
         })
       } else if (typeof mc.provideContext === 'function') {
-        mc.provideContext({ tools: registry })
+        mc.provideContext({ tools: window.__webmcpTools || [] })
       } else {
         return false
       }
@@ -58,6 +56,26 @@
     } catch (e) {
       return false
     }
+  }
+
+  // Registreer nu, of zodra een laat-injecterende runtime (extensie-polyfill,
+  // agent-browser) alsnog verschijnt; onRuntime vuurt bij activatie.
+  function registerTools(tools, onRuntime) {
+    var registry = (window.__webmcpTools = window.__webmcpTools || [])
+    registry.push.apply(registry, tools)
+    if (tryRegister(tools)) return true
+    var tries = 0
+    var check = function () {
+      if (tryRegister(tools)) {
+        window.removeEventListener('focus', check)
+        if (onRuntime) onRuntime()
+        return
+      }
+      if (++tries < 60) setTimeout(check, 500) // ~30s
+    }
+    window.addEventListener('focus', check)
+    setTimeout(check, 500)
+    return false
   }
 
   function track(type, offer, context) {
@@ -231,7 +249,14 @@
         var widget = initWidget(auction, slot)
         var winners = auction.ranking.filter(function (o) { return o.winner })
         var tools = winners.map(function (o) { return buildTool(o, auction, widget) })
-        var registered = registerTools(tools)
+        var registered = registerTools(tools, function () {
+          // runtime verscheen alsnog: labels bijwerken
+          Array.prototype.forEach.call(
+            widget.toolsEl().querySelectorAll('.agentads-live'),
+            function (el) { el.textContent = 'live voor agents' },
+          )
+          widget.log('WebMCP-runtime gedetecteerd · tools aangemeld')
+        })
 
         var toolsEl = widget.toolsEl()
         winners.forEach(function (o, i) {
@@ -239,8 +264,8 @@
           row.innerHTML =
             '<button>Probeer</button><code>' + esc(o.toolName) + '</code><br><small>' +
             esc(o.product) + ' — ' + esc(o.advertiser) + ' · ' + euro(o.pricePaid || 0) +
-            '/call' + (registered ? ' · live voor agents' : ' · demo (geen WebMCP-runtime)') +
-            '</small>'
+            '/call · <span class="agentads-live">' +
+            (registered ? 'live voor agents' : 'wacht op WebMCP-runtime') + '</span></small>'
           row.querySelector('button').addEventListener('click', function () {
             tools[i].execute({ demo: true })
           })

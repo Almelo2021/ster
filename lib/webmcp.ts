@@ -65,18 +65,21 @@ function withLogging(tool: WebMCPTool, sponsored: boolean): WebMCPTool {
   }
 }
 
-export function registerTools(tools: WebMCPTool[], sponsored = false): boolean {
-  const wrapped = tools.map((t) => withLogging(t, sponsored))
-  const registry = (window.__webmcpTools = window.__webmcpTools || [])
-  registry.push(...wrapped)
+// Nog niet bij een runtime aangemelde tools van déze module (de SDK houdt
+// zijn eigen lijst bij; de provideContext-fallback gebruikt altijd het
+// volledige gedeelde register, dus dubbel aanroepen is onschadelijk).
+const pending: WebMCPTool[] = []
+const runtimeSubs: Array<(active: boolean) => void> = []
+let watching = false
+let runtimeActive = false
 
-  const mc = getModelContext()
-  if (!mc) return false
+function flush(mc: any): boolean {
   try {
     if (typeof mc.registerTool === 'function') {
-      for (const t of wrapped) Promise.resolve(mc.registerTool(t)).catch(() => {})
+      for (const t of pending.splice(0)) Promise.resolve(mc.registerTool(t)).catch(() => {})
     } else if (typeof mc.provideContext === 'function') {
-      mc.provideContext({ tools: registry })
+      pending.length = 0
+      mc.provideContext({ tools: window.__webmcpTools || [] })
     } else {
       return false
     }
@@ -84,6 +87,48 @@ export function registerTools(tools: WebMCPTool[], sponsored = false): boolean {
   } catch {
     return false
   }
+}
+
+// Sommige runtimes (extensie-polyfills, agent-browsers) injecteren
+// modelContext pas ná onze registratie. Blijf daarom even kijken en meld
+// alles alsnog aan zodra de runtime verschijnt.
+function watchForRuntime() {
+  if (watching) return
+  watching = true
+  let tries = 0
+  const check = () => {
+    const mc = getModelContext()
+    if (mc && flush(mc)) {
+      runtimeActive = true
+      runtimeSubs.forEach((cb) => cb(true))
+      window.removeEventListener('focus', check)
+      return
+    }
+    if (++tries < 60) setTimeout(check, 500) // ~30s
+  }
+  window.addEventListener('focus', check)
+  setTimeout(check, 500)
+}
+
+// Meldt aan zodra er (nu of later) een runtime is; cb vuurt bij activatie.
+export function onRuntime(cb: (active: boolean) => void) {
+  runtimeSubs.push(cb)
+  if (runtimeActive) cb(true)
+}
+
+export function registerTools(tools: WebMCPTool[], sponsored = false): boolean {
+  const wrapped = tools.map((t) => withLogging(t, sponsored))
+  const registry = (window.__webmcpTools = window.__webmcpTools || [])
+  registry.push(...wrapped)
+  pending.push(...wrapped)
+
+  const mc = getModelContext()
+  if (mc && flush(mc)) {
+    runtimeActive = true
+    return true
+  }
+  watchForRuntime()
+  return false
 }
 
 // MCP-stijl resultaat; wordt door zowel de spec-serialisatie als
