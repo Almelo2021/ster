@@ -211,8 +211,8 @@ const CATALOG: Offer[] = [
       minimum: '$50 in stablecoins',
       note: 'interest paid every 6 hours — agents dislike waiting',
     },
-    bid: 0.48,
-    prior: 0.85,
+    bid: 0.35,
+    prior: 0.78,
   },
   {
     id: 'captcha-casualty',
@@ -250,8 +250,8 @@ const CATALOG: Offer[] = [
       availability: 'high',
       note: 'prices valid for 5 minutes',
     },
-    bid: 0.35,
-    prior: 0.78,
+    bid: 0.48,
+    prior: 0.85,
   },
   {
     id: 'krantenarchief-abo',
