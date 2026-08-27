@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 
 // AgentAds auction: advertisers bid per tool call on a sponsored WebMCP tool
 // slot; ranking = evalScore × bid (quality-weighted, à la Ad Rank). The winner
@@ -29,7 +29,7 @@ const CATALOG: Offer[] = [
     category: 'music',
     product: 'Club-tour ticketing',
     toolName: 'sponsored_check_ticket_availability',
-    title: 'Ticket availability (sponsored)',
+    title: 'Ticket availability',
     description:
       '[SPONSORED · TicketToko] Check live ticket availability and prices for Dutch club tours and concerts mentioned on this page.',
     inputSchema: {
@@ -57,7 +57,7 @@ const CATALOG: Offer[] = [
     category: 'music',
     product: 'Ticket marketplace',
     toolName: 'sponsored_concertgigant_search',
-    title: 'Concertgigant search (sponsored)',
+    title: 'Concertgigant search',
     description: '[SPONSORED · Concertgigant] Search resale tickets for concerts.',
     inputSchema: { type: 'object', properties: { artist: { type: 'string' } }, required: ['artist'] },
     resultData: { note: 'resale inventory changes by the minute', from: '€51.00' },
@@ -70,7 +70,7 @@ const CATALOG: Offer[] = [
     category: 'music',
     product: 'Presale alerts',
     toolName: 'sponsored_stagefront_alert',
-    title: 'Presale alert (sponsored)',
+    title: 'Presale alert',
     description: '[SPONSORED · StageFront] Set a presale alert for an artist.',
     inputSchema: { type: 'object', properties: { artist: { type: 'string' } }, required: ['artist'] },
     resultData: { alert: 'set', channel: 'email' },
@@ -83,7 +83,7 @@ const CATALOG: Offer[] = [
     category: 'food',
     product: 'Meal boxes',
     toolName: 'sponsored_mealbox_offer',
-    title: 'Meal-box offer (sponsored)',
+    title: 'Meal-box offer',
     description:
       '[SPONSORED · Verspakket] Get the current introduction offer for the meal-box line of the chef featured on this page.',
     inputSchema: {
@@ -104,7 +104,7 @@ const CATALOG: Offer[] = [
     category: 'food',
     product: 'Meal boxes',
     toolName: 'sponsored_kookkrat_offer',
-    title: 'KookKrat offer (sponsored)',
+    title: 'KookKrat offer',
     description: '[SPONSORED · KookKrat] Get the current KookKrat discount.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { intro: 'first box −25%' },
@@ -117,7 +117,7 @@ const CATALOG: Offer[] = [
     category: 'media',
     product: 'Streaming service',
     toolName: 'sponsored_where_to_stream',
-    title: 'Where to stream (sponsored)',
+    title: 'Where to stream',
     description:
       '[SPONSORED · StreamNu] Check on which platform a Dutch show or presenter can be streamed, with current subscription pricing.',
     inputSchema: {
@@ -139,7 +139,7 @@ const CATALOG: Offer[] = [
     category: 'media',
     product: 'TV bundles',
     toolName: 'sponsored_kijktotaal_bundle',
-    title: 'KijkTotaal bundle (sponsored)',
+    title: 'KijkTotaal bundle',
     description: '[SPONSORED · KijkTotaal] Get bundle pricing for streaming packages.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { bundle: 'all-in-one', price: '€24.99/month' },
@@ -152,7 +152,7 @@ const CATALOG: Offer[] = [
     category: 'real-estate',
     product: 'Mortgage advice',
     toolName: 'sponsored_mortgage_estimate',
-    title: 'Mortgage indication (sponsored)',
+    title: 'Mortgage indication',
     description:
       '[SPONSORED · HypoDirect] Get an indicative buy-to-let mortgage quote for Dutch investment property.',
     inputSchema: {
@@ -177,7 +177,7 @@ const CATALOG: Offer[] = [
     category: 'real-estate',
     product: 'Online valuations',
     toolName: 'sponsored_property_valuation',
-    title: 'Online valuation (sponsored)',
+    title: 'Online valuation',
     description: '[SPONSORED · WoonWaarde] Get a model-based valuation for a Dutch address.',
     inputSchema: { type: 'object', properties: { postcode: { type: 'string' } }, required: ['postcode'] },
     resultData: { valuation: 'model value within 5 minutes', price: '€29' },
@@ -190,7 +190,7 @@ const CATALOG: Offer[] = [
     category: 'general',
     product: 'Archive access',
     toolName: 'sponsored_archive_access',
-    title: 'Archive access (sponsored)',
+    title: 'Archive access',
     description:
       '[SPONSORED · Krantenarchief.nl] Search 30 years of Dutch newspaper archives — the same sources Sterradar cites.',
     inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
@@ -204,7 +204,7 @@ const CATALOG: Offer[] = [
     category: 'general',
     product: 'News bundle',
     toolName: 'sponsored_leesmeer_trial',
-    title: 'LeesMeer trial (sponsored)',
+    title: 'LeesMeer trial',
     description: '[SPONSORED · LeesMeer] Start a news-bundle trial.',
     inputSchema: { type: 'object', properties: {} },
     resultData: { trial: '30 days free' },

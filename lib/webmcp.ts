@@ -26,6 +26,9 @@ export type ToolCallDetail = {
 declare global {
   interface Window {
     __webmcpTools?: WebMCPTool[]
+    // set to 'human' around a panel/widget try-button call so the shared
+    // call log labels it correctly; agent calls leave it unset
+    __webmcpCallSource?: 'agent' | 'human'
   }
   interface Navigator {
     modelContext?: any
@@ -56,7 +59,7 @@ function withLogging(tool: WebMCPTool, sponsored: boolean): WebMCPTool {
         name: tool.name,
         args: input || {},
         result,
-        source: 'agent',
+        source: window.__webmcpCallSource || 'agent',
         sponsored,
         ts: Date.now(),
       })
@@ -117,10 +120,14 @@ export function onRuntime(cb: (active: boolean) => void) {
 }
 
 export function registerTools(tools: WebMCPTool[], sponsored = false): boolean {
-  const wrapped = tools.map((t) => withLogging(t, sponsored))
   const registry = (window.__webmcpTools = window.__webmcpTools || [])
+  // dedupe by name (guards against double registration, e.g. React strict mode)
+  const wrapped = tools
+    .filter((t) => !registry.some((r) => r.name === t.name))
+    .map((t) => withLogging(t, sponsored))
   registry.push(...wrapped)
   pending.push(...wrapped)
+  window.dispatchEvent(new CustomEvent('webmcp:toolschanged'))
 
   const mc = getModelContext()
   if (mc && flush(mc)) {

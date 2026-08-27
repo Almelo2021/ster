@@ -4,7 +4,6 @@ import { ARTICLES, getArticle, searchArticles } from '../lib/articles'
 import {
   onRuntime,
   registerTools,
-  emitToolCall,
   textResult,
   type ToolCallDetail,
   type WebMCPTool,
@@ -86,6 +85,11 @@ const SAMPLE_ARGS: Record<string, Record<string, unknown>> = {
   list_articles: {},
   read_article: { slug: 'jesse-vondel-clubtour' },
   search_articles: { query: 'net worth' },
+  sponsored_check_ticket_availability: { artist: 'Jesse Vondel' },
+  sponsored_where_to_stream: { title: 'Daan Verhoeven' },
+  sponsored_mortgage_estimate: { amount: 350000, ltv: 60 },
+  sponsored_mealbox_offer: { persons: 2 },
+  sponsored_archive_access: { query: 'net worth' },
 }
 
 export default function AgentToolsPanel() {
@@ -95,24 +99,36 @@ export default function AgentToolsPanel() {
   const [log, setLog] = useState<ToolCallDetail[]>([])
 
   useEffect(() => {
-    const siteTools = buildSiteTools()
-    setTools(siteTools)
-    setActive(registerTools(siteTools))
+    setActive(registerTools(buildSiteTools()))
     // runtimes that inject only after page load (extensions, agent browsers)
     onRuntime((a) => setActive(a))
+
+    // show the full shared registry — including sponsored tools the AgentAds
+    // SDK registers later — and stay in sync when it changes
+    const syncTools = () => setTools([...(window.__webmcpTools || [])])
+    syncTools()
+    window.addEventListener('webmcp:toolschanged', syncTools)
 
     const onCall = (e: Event) => {
       const detail = (e as CustomEvent<ToolCallDetail>).detail
       setLog((prev) => [detail, ...prev].slice(0, 20))
     }
     window.addEventListener('webmcp:toolcall', onCall)
-    return () => window.removeEventListener('webmcp:toolcall', onCall)
+    return () => {
+      window.removeEventListener('webmcp:toolschanged', syncTools)
+      window.removeEventListener('webmcp:toolcall', onCall)
+    }
   }, [])
 
   async function tryTool(tool: WebMCPTool) {
     const args = SAMPLE_ARGS[tool.name] ?? {}
-    const result = await tool.execute(args)
-    emitToolCall({ name: tool.name, args, result, source: 'human', sponsored: false, ts: Date.now() })
+    // registry tools log their own calls; flag this one as human-initiated
+    window.__webmcpCallSource = 'human'
+    try {
+      await tool.execute(args)
+    } finally {
+      delete window.__webmcpCallSource
+    }
   }
 
   return (
@@ -128,7 +144,12 @@ export default function AgentToolsPanel() {
             {tools.map((t) => (
               <li key={t.name}>
                 <div>
-                  <code>{t.name}</code>
+                  <code>
+                    {t.name}
+                    {Boolean(t.annotations?.sponsored) && (
+                      <span className="badge badge-sponsored"> SPONSORED</span>
+                    )}
+                  </code>
                   <span>{t.description}</span>
                 </div>
                 <button onClick={() => tryTool(t)}>Try</button>

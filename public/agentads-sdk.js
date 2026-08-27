@@ -62,7 +62,11 @@
   // polyfill, agent browser) shows up after all; onRuntime fires on activation.
   function registerTools(tools, onRuntime) {
     var registry = (window.__webmcpTools = window.__webmcpTools || [])
+    tools = tools.filter(function (t) {
+      return !registry.some(function (r) { return r.name === t.name })
+    })
     registry.push.apply(registry, tools)
+    try { window.dispatchEvent(new CustomEvent('webmcp:toolschanged')) } catch (e) {}
     if (tryRegister(tools)) return true
     var tries = 0
     var check = function () {
@@ -209,7 +213,7 @@
           new CustomEvent('webmcp:toolcall', {
             detail: {
               name: offer.toolName, args: input || {}, result: result,
-              source: 'agent', sponsored: true, ts: Date.now(),
+              source: window.__webmcpCallSource || 'agent', sponsored: true, ts: Date.now(),
             },
           }),
         )
