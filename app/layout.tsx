@@ -1,5 +1,7 @@
 import './globals.css'
 import Link from 'next/link'
+import Script from 'next/script'
+import AgentToolsPanel from '../components/AgentToolsPanel'
 
 export const metadata = {
   title: 'Sterradar — leeftijd, carrière en vermogen van bekende Nederlanders',
@@ -16,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ✦ Sterradar
           </Link>
           <nav>
+            <Link href="/artikelen">Artikelen</Link>
             <Link href="/#methode">Methode</Link>
             <Link href="/#faq">Veelgestelde vragen</Link>
             <Link href="/#actiecode">Actiecode</Link>
@@ -30,6 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </p>
           <p>© {new Date().getFullYear()} Sterradar</p>
         </footer>
+        <AgentToolsPanel />
+        {/* AgentAds: één scripttag monetiseert het WebMCP-oppervlak van de site */}
+        <Script src="/agentads-sdk.js" data-publisher="sterradar" strategy="afterInteractive" />
       </body>
     </html>
   )

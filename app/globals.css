@@ -72,6 +72,62 @@ li { margin-bottom: 0.35rem; }
 }
 .site-footer p { margin-bottom: 0.5rem; }
 
+/* --- artikelen --- */
+.article-list .article-card { border-bottom: 1px solid var(--line); padding-bottom: 1.5rem; margin-bottom: 1.75rem; }
+.article-card h2 { margin-bottom: 0.4rem; }
+.article-card h2 a { color: var(--ink); text-decoration: none; }
+.article-card h2 a:hover { color: var(--accent); }
+.article-meta {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;
+  font-family: system-ui, sans-serif; font-size: 0.8rem; color: var(--muted);
+}
+.cat-badge {
+  background: var(--accent-soft); color: var(--accent); border-radius: 5px;
+  padding: 0.1rem 0.5rem; font-weight: 600; text-transform: capitalize;
+}
+.article-full h1 { font-size: 1.9rem; line-height: 1.25; margin-bottom: 0.75rem; }
+.article-full .lede { font-size: 1.1rem; color: var(--muted); margin-bottom: 1.25rem; }
+.article-bronnen { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 0.75rem; }
+.agentads-mount { margin: 1.75rem 0; }
+
+/* --- agent-tools paneel --- */
+.agent-panel { position: fixed; right: 16px; bottom: 16px; z-index: 9999; font-family: system-ui, sans-serif; }
+.agent-panel-toggle {
+  float: right; background: var(--accent); color: white; border: none; border-radius: 999px;
+  padding: 0.55rem 1.1rem; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 14px rgba(67, 56, 202, 0.35);
+}
+.agent-panel-body {
+  width: min(380px, calc(100vw - 32px)); max-height: 70vh; overflow: auto;
+  background: white; border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); padding: 0.9rem; margin-bottom: 0.6rem; font-size: 0.82rem;
+}
+.agent-panel-status { color: var(--muted); margin-bottom: 0.6rem; line-height: 1.4; }
+.agent-panel-tools { list-style: none; margin: 0 0 0.75rem; }
+.agent-panel-tools li {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 0.6rem;
+  border: 1px solid var(--line); border-radius: 8px; padding: 0.45rem 0.6rem; margin-bottom: 0.4rem;
+}
+.agent-panel-tools code { display: block; color: var(--accent); font-weight: 600; }
+.agent-panel-tools span { color: var(--muted); font-size: 0.76rem; line-height: 1.35; display: block; }
+.agent-panel-tools button {
+  flex-shrink: 0; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent);
+  border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.76rem; cursor: pointer;
+}
+.agent-panel-log h4 { font-size: 0.82rem; margin-bottom: 0.35rem; }
+.agent-panel-empty { color: var(--muted); font-size: 0.78rem; }
+.agent-panel-log details { border-bottom: 1px dotted var(--line); padding: 0.25rem 0; }
+.agent-panel-log summary { cursor: pointer; display: flex; align-items: center; gap: 0.4rem; }
+.agent-panel-log summary code { font-size: 0.78rem; }
+.agent-panel-log time { margin-left: auto; color: var(--muted); font-size: 0.72rem; }
+.agent-panel-log pre {
+  font-size: 0.72rem; background: #f6f6fa; border-radius: 6px; padding: 0.5rem;
+  margin: 0.35rem 0; white-space: pre-wrap; word-break: break-word;
+}
+.badge { border-radius: 4px; padding: 0 0.35rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; }
+.badge-agent { background: #dcfce7; color: #15803d; }
+.badge-mens { background: var(--accent-soft); color: var(--accent); }
+.badge-sponsored { background: #fef3c7; color: #b45309; }
+
 table.stats { border-collapse: collapse; width: 100%; font-family: system-ui, sans-serif; font-size: 0.9rem; }
 table.stats th, table.stats td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; }
 table.stats th { background: var(--accent-soft); }
