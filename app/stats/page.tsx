@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+﻿export const dynamic = 'force-dynamic'
 
 const AI_AGENTS = [
   'ChatGPT-User',
@@ -56,14 +56,14 @@ export default async function Stats() {
     <>
       <h1>Sterradar stats</h1>
       <p style={{ margin: '0.5rem 0 1.5rem' }}>
-        Laatste {rows.length} events. AI-agents: {aiVisits.length} pageviews, codes
-        ingewisseld: {redeems.length}.
+        Last {rows.length} events. AI agents: {aiVisits.length} pageviews, codes
+        redeemed: {redeems.length}.
       </p>
 
       <h2>Per dag</h2>
       <table className="stats">
         <thead>
-          <tr><th>Dag</th><th>Pageviews</th><th>AI-agent views</th><th>Redeems</th></tr>
+          <tr><th>Day</th><th>Pageviews</th><th>AI-agent views</th><th>Redeems</th></tr>
         </thead>
         <tbody>
           {[...byDay.entries()].map(([day, d]) => (
@@ -74,10 +74,10 @@ export default async function Stats() {
         </tbody>
       </table>
 
-      <h2 style={{ marginTop: '2rem' }}>Ingewisselde codes</h2>
+      <h2 style={{ marginTop: '2rem' }}>Redeemed codes</h2>
       <table className="stats">
         <thead>
-          <tr><th>Tijd</th><th>Code</th><th>Pad</th><th>User-agent</th><th>IP</th></tr>
+          <tr><th>Time</th><th>Code</th><th>Path</th><th>User-agent</th><th>IP</th></tr>
         </thead>
         <tbody>
           {redeems.map((x, i) => (
@@ -92,10 +92,10 @@ export default async function Stats() {
         </tbody>
       </table>
 
-      <h2 style={{ marginTop: '2rem' }}>AI-agent bezoeken</h2>
+      <h2 style={{ marginTop: '2rem' }}>AI-agent visits</h2>
       <table className="stats">
         <thead>
-          <tr><th>Tijd</th><th>Agent</th><th>Pad</th><th>Query</th><th>Referrer</th></tr>
+          <tr><th>Time</th><th>Agent</th><th>Path</th><th>Query</th><th>Referrer</th></tr>
         </thead>
         <tbody>
           {aiVisits.map((x, i) => (
@@ -113,7 +113,7 @@ export default async function Stats() {
       <h2 style={{ marginTop: '2rem' }}>Recente pageviews (alle)</h2>
       <table className="stats">
         <thead>
-          <tr><th>Tijd</th><th>Pad</th><th>Query</th><th>Referrer</th><th>User-agent</th></tr>
+          <tr><th>Time</th><th>Path</th><th>Query</th><th>Referrer</th><th>User-agent</th></tr>
         </thead>
         <tbody>
           {rows
