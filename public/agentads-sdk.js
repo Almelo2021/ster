@@ -117,6 +117,9 @@
     '.agentads .tool code{font-size:11px}' +
     '.agentads .tool button{float:right;border:none;background:#4338ca;color:#fff;border-radius:5px;' +
     'padding:.15rem .55rem;font-size:11px;cursor:pointer}' +
+    '.agentads .tool pre{clear:both;display:none;background:#f6f6fa;border-radius:5px;' +
+    'padding:.4rem .5rem;margin-top:.4rem;font-size:10px;line-height:1.5;max-height:150px;' +
+    'overflow:auto;white-space:pre-wrap;word-break:break-word}' +
     '.agentads .log{max-height:110px;overflow:auto;margin-top:.35rem}' +
     '.agentads .log div{padding:.14rem 0;border-bottom:1px dotted #eee;color:#5c5c6e;font-size:11px}' +
     '.agentads .muted{color:#8a8a9a;font-size:10.5px;margin-top:.4rem}' +
@@ -260,9 +263,15 @@
             '<button>Try</button><code>' + esc(o.toolName) + '</code><br><small>' +
             esc(o.product) + ' — ' + esc(o.advertiser) + ' · ' + euro(o.pricePaid || 0) +
             '/call · <span class="agentads-live">' +
-            (registered ? 'live for agents' : 'waiting for WebMCP runtime') + '</span></small>'
+            (registered ? 'live for agents' : 'waiting for WebMCP runtime') + '</span></small>' +
+            '<pre></pre>'
           row.querySelector('button').addEventListener('click', function () {
-            tools[i].execute({ demo: true })
+            window.__webmcpCallSource = 'human'
+            tools[i].execute({ demo: true }).then(function (r) {
+              var pre = row.querySelector('pre')
+              pre.textContent = r.content[0].text
+              pre.style.display = 'block'
+            }).finally(function () { delete window.__webmcpCallSource })
           })
           toolsEl.appendChild(row)
         })

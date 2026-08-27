@@ -155,7 +155,8 @@ export default function AgentToolsPanel() {
             <h4>Live call log</h4>
             {log.length === 0 && <p className="agent-panel-empty">No tool calls yet.</p>}
             {log.map((c, i) => (
-              <details key={i}>
+              // newest call renders expanded so a Try click shows its return
+              <details key={`${c.ts}-${c.name}`} open={i === 0}>
                 <summary>
                   <span className={c.source === 'agent' ? 'badge badge-agent' : 'badge badge-human'}>
                     {c.source === 'agent' ? 'AGENT' : 'HUMAN'}
