@@ -1,13 +1,14 @@
-# AgentAds on Sterradar — WebMCP Challenge entry
+# AgentAds by Oasy — WebMCP Challenge entry
 
 **AgentAds** is an honest ad auction inside a page's WebMCP tools: one script
 tag turns any site that exposes WebMCP tools into ad inventory for agents, with
 a quality-weighted auction, disclosure, and a live rev-share for the site owner.
+Built by [Oasy](https://www.oasy.ai) — the advertising layer for the AI era.
 
-**Sterradar** is the demo publisher: an editorial site covering the age, career
-and estimated net worth of (fictional) Dutch celebrities. Its articles are
-readable by humans and exposed as WebMCP tools to agents; the AgentAds SDK
-monetizes that surface.
+The demo publisher is a fictional editorial site covering the age, career and
+estimated net worth of (fictional) celebrities. Its articles are readable by
+humans and exposed as WebMCP tools to agents; the AgentAds SDK monetizes that
+surface.
 
 See `DEVPOST.md` for the full submission write-up.
 
@@ -23,7 +24,7 @@ The **AgentAds SDK** (`public/agentads-sdk.js`) is a standalone script embedded
 with one tag:
 
 ```html
-<script src="/agentads-sdk.js" data-publisher="sterradar" defer></script>
+<script src="/agentads-sdk.js" data-publisher="oasy-demo" defer></script>
 ```
 
 It asks `/api/agentads/auction` for the auction matching the page's context —

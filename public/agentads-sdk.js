@@ -98,7 +98,7 @@
   // ---------- widget ----------
 
   var css =
-    '.agentads{font-family:system-ui,sans-serif;font-size:12.5px;line-height:1.45;color:#1b1b23;' +
+    '.agentads{font-family:Inter,system-ui,sans-serif;font-size:12.5px;line-height:1.45;color:#0c1b3a;' +
     'background:#fff;border:1px solid #e7e7ef;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.08);' +
     'max-width:340px;overflow:hidden}' +
     '.agentads-fixed{position:fixed;left:16px;bottom:16px;z-index:9998}' +
@@ -111,11 +111,11 @@
     '.agentads th{color:#5c5c6e;font-weight:600}' +
     '.agentads .win{background:#f0fdf4;font-weight:600}' +
     '.agentads .earn{display:flex;justify-content:space-between;align-items:baseline;' +
-    'background:#eef2ff;border-radius:6px;padding:.4rem .6rem;margin:.3rem 0 .45rem}' +
-    '.agentads .earn strong{font-size:15px;color:#4338ca}' +
+    'background:#e7f5ee;border-radius:6px;padding:.4rem .6rem;margin:.3rem 0 .45rem}' +
+    '.agentads .earn strong{font-size:15px;color:#1f8a42}' +
     '.agentads .tool{border:1px dashed #f59e0b;border-radius:6px;padding:.4rem .55rem;margin:.3rem 0}' +
     '.agentads .tool code{font-size:11px}' +
-    '.agentads .tool button{float:right;border:none;background:#4338ca;color:#fff;border-radius:5px;' +
+    '.agentads .tool button{float:right;border:none;background:#1f8a42;color:#fff;border-radius:5px;' +
     'padding:.15rem .55rem;font-size:11px;cursor:pointer}' +
     '.agentads .tool pre{clear:both;display:none;background:#f6f6fa;border-radius:5px;' +
     'padding:.4rem .5rem;margin-top:.4rem;font-size:10px;line-height:1.5;max-height:150px;' +
@@ -123,7 +123,7 @@
     '.agentads .log{max-height:110px;overflow:auto;margin-top:.35rem}' +
     '.agentads .log div{padding:.14rem 0;border-bottom:1px dotted #eee;color:#5c5c6e;font-size:11px}' +
     '.agentads .muted{color:#8a8a9a;font-size:10.5px;margin-top:.4rem}' +
-    '.agentads a{color:#4338ca}'
+    '.agentads a{color:#1f8a42}'
 
   function h(tag, attrs, html) {
     var el = document.createElement(tag)

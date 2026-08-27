@@ -17,9 +17,9 @@ function buildSiteTools(): WebMCPTool[] {
   return [
     {
       name: 'list_articles',
-      title: 'Articles on Sterradar',
+      title: 'Articles on this site',
       description:
-        'List all editorial articles on Sterradar with slug, title, category, date and URL.',
+        'List all editorial articles on this site with slug, title, category, date and URL.',
       inputSchema: { type: 'object', properties: {} },
       annotations: { readOnlyHint: true },
       execute: async () =>
@@ -37,7 +37,7 @@ function buildSiteTools(): WebMCPTool[] {
       name: 'read_article',
       title: 'Read article',
       description:
-        'Read the full text of a Sterradar article by its slug (see list_articles).',
+        'Read the full text of an article on this site by its slug (see list_articles).',
       inputSchema: {
         type: 'object',
         properties: { slug: { type: 'string', description: 'Article slug' } },
@@ -60,7 +60,7 @@ function buildSiteTools(): WebMCPTool[] {
     {
       name: 'search_articles',
       title: 'Search articles',
-      description: 'Full-text search across all Sterradar articles. Returns matching articles.',
+      description: 'Full-text search across all articles on this site. Returns matching articles.',
       inputSchema: {
         type: 'object',
         properties: { query: { type: 'string', description: 'Search terms' } },

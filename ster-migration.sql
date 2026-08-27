@@ -1,4 +1,4 @@
--- Run once in the Supabase SQL editor before deploying sterradar.nl.
+﻿-- Run once in the Supabase SQL editor before deploying.
 create table if not exists sterradar_events (
   id bigserial primary key,
   created_at timestamptz not null default now(),

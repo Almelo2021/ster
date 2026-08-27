@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <section className="x-hero">
-        <p className="kicker">AgentAds · An entry for the OpenAI WebMCP Challenge</p>
+        <p className="kicker">AgentAds by Oasy · An entry for the OpenAI WebMCP Challenge</p>
         <h1>The web runs on ads. Agents don&rsquo;t see ads.</h1>
         <p className="lede">
           As browsing shifts to agents, every publisher&rsquo;s ad revenue quietly
@@ -27,8 +27,8 @@ export default function Home() {
         <h2>How it works</h2>
         <ol className="x-steps">
           <li>
-            <strong>A site exposes WebMCP tools.</strong> This site is the demo: Sterradar,
-            an editorial site whose articles are readable by people and callable by agents
+            <strong>A site exposes WebMCP tools.</strong> This site is the demo: an
+            editorial publisher whose articles are readable by people and callable by agents
             — <code>list_articles</code>, <code>read_article</code>,{' '}
             <code>search_articles</code>. Open the ⚙ panel in the corner; that is the
             exact tool list an agent sees.
@@ -125,9 +125,10 @@ export default function Home() {
       </section>
 
       <p className="x-fiction">
-        Sterradar is a fictional demo publisher built for this entry. The people in its
-        articles, the advertisers and the prices are invented; the auction, the payments
-        ledger and the telemetry are real code.
+        This site is a fictional demo publisher, built for this entry by{' '}
+        <a href="https://www.oasy.ai">Oasy</a> — the advertising layer for the AI era. The
+        people in its articles, the advertisers and the prices are invented; the auction,
+        the payments ledger and the telemetry are real code.
       </p>
     </>
   )

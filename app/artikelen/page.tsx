@@ -1,10 +1,10 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { ARTICLES } from '../../lib/articles'
 
 export const metadata = {
-  title: 'Articles — Sterradar',
+  title: 'Articles — AgentAds by Oasy',
   description:
-    'Editorial articles from Sterradar: net worths, deals and business moves of well-known Dutch figures.',
+    'Editorial articles on the AgentAds demo publisher: net worths, deals and business moves.',
 }
 
 const CATEGORY_LABEL: Record<string, string> = {

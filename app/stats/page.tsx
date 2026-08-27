@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+﻿export const dynamic = 'force-dynamic'
 
 const AI_AGENTS = [
   'ChatGPT-User',
@@ -69,7 +69,7 @@ export default async function Stats() {
 
   return (
     <>
-      <h1>Sterradar stats</h1>
+      <h1>AgentAds stats</h1>
       <p style={{ margin: '0.5rem 0 1.5rem' }}>
         Last {rows.length} events. AI agents: {aiVisits.length} pageviews. These are the
         raw events the AgentAds auction computes its live rankScores from.

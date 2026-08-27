@@ -261,7 +261,7 @@ const CATALOG: Offer[] = [
     toolName: 'archive_access',
     title: 'Archive access',
     description:
-      '[SPONSORED · ArchiveHound] Search 30 years of Dutch newspaper archives — the same sources Sterradar cites.',
+      '[SPONSORED · ArchiveHound] Search 30 years of Dutch newspaper archives — the same sources this site cites.',
     inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
     resultData: { indicative_hits: '1,200+ articles', day_pass: '€2.50' },
     bid: 0.18,

@@ -15,16 +15,16 @@ context.
 
 ## What it does
 
-Our demo site, **Sterradar** (an editorial site covering Dutch celebrities),
-exposes its content as
-regular WebMCP tools: `list_articles`, `read_article`, `search_articles`. A
+AgentAds is built by **[Oasy](https://www.oasy.ai)** — the advertising layer for
+the AI era. Our demo site (a fictional editorial publisher) exposes its content
+as regular WebMCP tools: `list_articles`, `read_article`, `search_articles`. A
 human-visible panel shows the exact tool list the agent sees, with one-click try
 buttons and a live call log — humans and agents literally share the same tools.
 
 Then one script tag adds the **AgentAds SDK**:
 
 ```html
-<script src="/agentads-sdk.js" data-publisher="sterradar" defer></script>
+<script src="/agentads-sdk.js" data-publisher="oasy-demo" defer></script>
 ```
 
 On page load the SDK:
