@@ -292,7 +292,7 @@ const CATALOG: Offer[] = [
 
 const REV_SHARE = 0.7 // publisher share of every paid call
 const EXPLORE_SHARE = 0.1 // share of auctions serving a non-winner for data
-const PRIOR_WEIGHT = 20 // impressions until observed behaviour ≈ outweighs prior
+const PRIOR_WEIGHT = 100 // impressions until observed behaviour ≈ outweighs prior
 
 type OfferStats = { impressions: number; calls: number; conversions: number }
 
